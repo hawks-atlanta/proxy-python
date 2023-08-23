@@ -27,4 +27,4 @@ jobs:
           PYTHONPATH: "."
       
       - name: Clean docker environment
-        run: docker compose -f docker-compose.dev.yaml down --rmi all -v --remove-orphans
+        run: docker compose down --rmi all -v --remove-orphans
