@@ -1,0 +1,30 @@
+name: Coverage
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Set up docker environment
+        run: docker compose up -d
+      - name: Run tests
+        run: coverage run -m pytest
+        env:
+          PYTHONPATH: "."
+      - uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./.coverage
+          fail_ci_if_error: true
+      - name: Clean docker environment
+        run: docker compose down --rmi all -v --remove-orphans
