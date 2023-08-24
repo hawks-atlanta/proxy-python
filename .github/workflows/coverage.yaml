@@ -18,13 +18,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run tests
-        run: coverage run -m pytest
+        run: coverage run -m pytest && coverage xml
         env:
           PYTHONPATH: "."
       - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./.coverage
+          files: ./coverage.xml
           fail_ci_if_error: true
       - name: Clean docker environment
         run: docker compose down --rmi all -v --remove-orphans
