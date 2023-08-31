@@ -1,0 +1,425 @@
+openapi: 3.0.3
+
+info:
+  title: Proxy Python
+  license:
+    name: MIT
+    url: https://github.com/hawks-atlanta/proxy-python/blob/main/LICENSE
+  version: 1.0.0
+
+tags:
+  - name: Authentication
+  - name: Account
+  - name: Authorization
+  - name: Files
+
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      description: Authenticates to the server
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        '201':
+          description: Login succeed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /register:
+    post:
+      tags:
+        - Authentication
+      description: Register the new user in the service
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credentials'
+      responses:
+        '201':
+          description: Registration succeed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization'
+        '409':
+          description: Username already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /challenge:
+    post:
+      tags:
+        - Authorization
+      description: Verifies the received token is still valid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authorization'
+      responses:
+        '200':
+          description: Account token is still valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /account/password:
+    patch:
+      tags:
+        - Account
+      description: Updates the username password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/authorization'
+                - type: object
+                  properties:
+                    currentPassword:
+                      type: string
+                    newPassword:
+                      type: string
+      responses:
+        '200':
+          description: Password updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /user/uuid/{username}:
+    get:
+      tags:
+        - Account
+      description: Obtain the uuid of an user by its username
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User uuid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/account'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /files:
+    post:
+      tags:
+        - Files
+      description: Create a new file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fileDetails'
+      responses:
+        '201':
+          description: File created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /folders:
+    post:
+      tags:
+        - Files
+      description: Create a new folder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/folderDetails'
+      responses:
+        '201':
+          description: Folder created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /files/shared:
+    get:
+      tags:
+        - Files
+      description: Gets the list of shared files
+      responses:
+        '200':
+          description: List of shared files obtained
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/fileDetails'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /files/{fileId}/edit:
+    put:
+      tags:
+        - Files
+      description: Edit an existing file
+      parameters:
+        - in: path
+          name: fileId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: newContent
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File successfully edited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /files/{fileId}/delete:
+    delete:
+      tags:
+        - Files
+      description: Deletes an existing file
+      parameters:
+        - in: path
+          name: fileId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description:  Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+  /files/{fileId}/move:
+    patch:
+      tags:
+        - Files
+      description: Move an existing file to a different location
+      parameters:
+        - in: path
+          name: fileId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: newLocation
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: File moved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+
+  /logout:
+    post:
+      tags:
+        - Authentication
+      description: Closes the current session
+      responses:
+        '200':
+          description: Session successfully closed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+
+
+components:
+  schemas:
+    account:
+      type: object
+      properties:
+        uuid:
+          type: string
+    
+    statusResponse:
+      type: object
+      properties:
+        msg:
+          type: string
+        succeed:
+          type: boolean
+    
+    credentials:
+      type: object
+      properties:
+        username:
+          type: string
+          example: sulcud
+        password:
+          type: string
+          example: password
+    
+    authorization:
+      type: object
+      properties:
+        jwt:
+          type: string
+    
+    fileDetails:
+      type: object
+      properties:
+        fileName:
+          type: string
+        fileSize:
+          type: integer
+    
+    folderDetails:
+      type: object
+      properties:
+        folderName:
+          type: string
