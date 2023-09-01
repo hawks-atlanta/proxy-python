@@ -54,7 +54,7 @@ paths:
             schema:
               $ref: '#/components/schemas/credentials'
       responses:
-        '200':
+        '201':
           description: Registration succeed
           content:
             application/json:
@@ -185,7 +185,7 @@ paths:
                 file:
                   type: string 
       responses:
-        '200':
+        '201':
           description: File created successfully
           content:
             application/json:
@@ -220,7 +220,7 @@ paths:
                 location:
                   type: string  #UUID
       responses:
-        '200':
+        '201':
           description: Folder created successfully
           content:
             application/json:
