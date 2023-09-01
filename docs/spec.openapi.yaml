@@ -25,7 +25,7 @@ paths:
             schema:
               $ref: '#/components/schemas/credentials'
       responses:
-        '201':
+        '200':
           description: Login succeed
           content:
             application/json:
@@ -54,7 +54,7 @@ paths:
             schema:
               $ref: '#/components/schemas/credentials'
       responses:
-        '201':
+        '200':
           description: Registration succeed
           content:
             application/json:
@@ -174,11 +174,18 @@ paths:
       description: Create a new file
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/fileDetails'
+              type: object
+              properties:
+                fileName:
+                  type: string
+                location:
+                  type: string  
+                file:
+                  type: string 
       responses:
-        '201':
+        '200':
           description: File created successfully
           content:
             application/json:
@@ -196,6 +203,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
+
   /folders:
     post:
       tags:
@@ -205,9 +213,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/folderDetails'
+              type: object
+              properties:
+                folderName:
+                  type: string
+                location:
+                  type: string  #UUID
       responses:
-        '201':
+        '200':
           description: Folder created successfully
           content:
             application/json:
@@ -225,6 +238,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
+
   /files/shared:
     get:
       tags:
@@ -286,7 +300,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
-  /files/{fileId}/delete:
+  /files/{fileId}:
     delete:
       tags:
         - Files
@@ -351,21 +365,191 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
-
-  /logout:
-    post:
+                
+                
+  /files/list:
+    get:
       tags:
-        - Authentication
-      description: Closes the current session
+        - Files
+      description: List files in a given location
+      parameters:
+        - in: query
+          name: location
+          required: true
+          schema:
+            type: string  
+          description: The location (UUID) to list files from
       responses:
         '200':
-          description: Session successfully closed
+          description: List of files in the location
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/fileDetails'  
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+                
+  /files/download/{fileUUID}:
+    get:
+      tags:
+        - Files
+      description: Download a file by UUID
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The UUID of the file to download
+      responses:
+        '200':
+          description: File downloaded successfully
+          content:
+            application/octet-stream: 
+              schema:
+                type: string  
+                format: binary  
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+
+  /files/share:
+    post:
+      tags:
+        - Files
+      description: Share a file with a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/shareWithReq'  
+      responses:
+        '200':
+          description: File shared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '400':
+          description: Bad request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
         '401':
           description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+                
+  /files/unshare:
+    post:
+      tags:
+        - Files
+      description: Unshare a file with a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unshareWithReq'  
+      responses:
+        '200':
+          description: File unshared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '404':
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+              
+  /files/sharedwithwho:
+    get:
+      tags:
+        - Files
+      description: Get the list of users the file is shared with
+      parameters:
+        - in: query
+          name: fileUUID
+          required: true
+          schema:
+            type: string  
+      responses:
+        '200':
+          description: List of users the file is shared with
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sharedWithWhoResponse'  
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/statusResponse'
+        '404':
+          description: File not found
           content:
             application/json:
               schema:
@@ -417,9 +601,27 @@ components:
           type: string
         fileSize:
           type: integer
-    
-    folderDetails:
+          
+    shareWithReq:
       type: object
       properties:
-        folderName:
+        fileUUID:
           type: string
+        otherUserUUID:
+          type: string
+          
+    unshareWithReq:
+      type: object
+      properties:
+        fileUUID:
+          type: string  
+        otherUserUUID:
+          type: string
+          
+    sharedWithWhoResponse:
+      type: object
+      properties:
+        sharedUsers:
+          type: array
+          items:
+            $ref: '#/components/schemas/account'
