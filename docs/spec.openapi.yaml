@@ -252,7 +252,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/fileDetails'
+                  $ref: '#/components/schemas/fileDetailsShared'
         '401':
           description: Not authorized
           content:
@@ -375,7 +375,7 @@ paths:
       parameters:
         - in: query
           name: location
-          required: true
+          required: false
           schema:
             type: string  
           description: The location (UUID) to list files from
@@ -601,6 +601,25 @@ components:
           type: string
         fileSize:
           type: integer
+        isFile:
+          type: boolean
+        fileUUID:
+          type: string
+        
+    fileDetailsShared:
+      type: object
+      properties:
+        fileName:
+          type: string
+        fileSize:
+          type: integer
+        isFile:
+          type: boolean
+        fileUUID:
+          type: string
+        ownerusername:
+          type: string
+        
           
     shareWithReq:
       type: object
