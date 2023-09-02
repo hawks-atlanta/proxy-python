@@ -137,36 +137,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/statusResponse'
-  /user/uuid/{username}:
-    get:
-      tags:
-        - Account
-      description: Obtain the uuid of an user by its username
-      parameters:
-        - in: path
-          name: username
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: User uuid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/account'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/statusResponse'
+
   /files:
     post:
       tags:
@@ -491,7 +462,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unshareWithReq'  
+              $ref: '#/components/schemas/shareWithReq'  
       responses:
         '200':
           description: File unshared successfully
@@ -541,7 +512,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sharedWithWhoResponse'  
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: string
+                      example: sulcud
+
         '401':
           description: Not authorized
           content:
@@ -562,6 +540,7 @@ paths:
                 $ref: '#/components/schemas/statusResponse'
 
 
+
 components:
   schemas:
     account:
@@ -569,7 +548,6 @@ components:
       properties:
         uuid:
           type: string
-    
     statusResponse:
       type: object
       properties:
@@ -577,7 +555,6 @@ components:
           type: string
         succeed:
           type: boolean
-    
     credentials:
       type: object
       properties:
@@ -587,13 +564,11 @@ components:
         password:
           type: string
           example: password
-    
     authorization:
       type: object
       properties:
         jwt:
           type: string
-    
     fileDetails:
       type: object
       properties:
@@ -605,7 +580,6 @@ components:
           type: boolean
         fileUUID:
           type: string
-        
     fileDetailsShared:
       type: object
       properties:
@@ -618,29 +592,11 @@ components:
         fileUUID:
           type: string
         ownerusername:
-          type: string
-        
-          
+          type: string   
     shareWithReq:
       type: object
       properties:
         fileUUID:
           type: string
-        otherUserUUID:
+        otherUsername:
           type: string
-          
-    unshareWithReq:
-      type: object
-      properties:
-        fileUUID:
-          type: string  
-        otherUserUUID:
-          type: string
-          
-    sharedWithWhoResponse:
-      type: object
-      properties:
-        sharedUsers:
-          type: array
-          items:
-            $ref: '#/components/schemas/account'
