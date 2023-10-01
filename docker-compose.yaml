@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 services:
   # Gateway
@@ -11,9 +11,24 @@ services:
     environment:
       METADATA_BASEURL: http://metadata:8080
       AUTHENTICATION_BASEURL: http://authentication:8080
-      # TODO: Worker
+      WORKER_HOST: worker
+      WORKER_PORT: 1099
+    depends_on:
+      - worker
+      - metadata
+      - authentication
   # Microservices
-  # TODO: Add worker service
+  worker:
+    image: ghcr.io/hawks-atlanta/worker-java:latest
+    container_name: worker
+    restart: on-failure
+    ports:
+      - "127.0.0.1:1099:1099"
+    environment:
+      METADATA_BASEURL: http://metadata:8080/api/v1
+      # Use the default directory that is created in the worker container
+      # VOLUME_BASE_PATH: /tmp
+      # VOLUME_COUNT: 3
   metadata:
     image: ghcr.io/hawks-atlanta/metadata-scala:latest
     container_name: metadata
@@ -21,11 +36,13 @@ services:
     ports:
       - "127.0.0.1:8082:8080"
     environment:
-      DATABASE_HOST: "postgres-db"
+      DATABASE_HOST: "metadata-db"
       DATABASE_PORT: "5432"
       DATABASE_NAME: "database"
       DATABASE_USER: "username"
       DATABASE_PASSWORD: "password"
+    depends_on:
+      - metadata-db
   authentication:
     image: ghcr.io/hawks-atlanta/authentication-go:latest
     container_name: authentication
@@ -34,11 +51,13 @@ services:
       - "127.0.0.1:8083:8080"
     environment:
       DATABASE_ENGINE: postgres
-      DATABASE_DSN: "host=postgres-db user=username password=password dbname=database port=5432 sslmode=disable"
-  # Database
-  postgres-db:
-    image: postgres:latest
-    container_name: postgres-db
+      DATABASE_DSN: "host=authentication-db user=username password=password dbname=database port=5432 sslmode=disable"
+    depends_on:
+      - authentication-db
+  # Databases
+  authentication-db:
+    image: postgres:alpine3.18
+    container_name: authentication-db
     restart: on-failure
     ports:
       - "127.0.0.1:5432:5432"
@@ -46,7 +65,16 @@ services:
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=database
-
+  metadata-db:
+    image: postgres:alpine3.18
+    container_name: metadata-db
+    restart: on-failure
+    ports:
+      - "127.0.0.1:5434:5432"
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=database
   postgres-admin:
     image: dpage/pgadmin4
     container_name: postgres-admin
@@ -56,4 +84,5 @@ services:
       - PGADMIN_DEFAULT_EMAIL=postgres@postgres.com
       - PGADMIN_DEFAULT_PASSWORD=postgres
     depends_on:
-      - postgres-db
+      - authentication-db
+      - metadata-db
