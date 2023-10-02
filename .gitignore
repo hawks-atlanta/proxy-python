@@ -1,5 +1,12 @@
+# Python files
 venv
 __pycache__
+
+# Vscode files
+.vscode/*
+!.vscode/extensions.json
+
+# Pipelines files
 .coverage
 node_modules
 coverage.xml
