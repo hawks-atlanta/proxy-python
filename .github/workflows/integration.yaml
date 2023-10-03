@@ -1,0 +1,62 @@
+name: Integration
+
+on:
+  pull_request:
+    branches: ["dev"]
+
+jobs:
+  check-format: 
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Check format
+        run: black --check .
+  
+  check-linter:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Check linter
+        run: ruff check .
+
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up docker environment
+        run: docker-compose up -d
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' 
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: Run tests
+        run: pytest
+        env:
+          PYTHONPATH: "."
+      
+      - name: Clean docker environment
+        run: docker compose down --rmi all -v --remove-orphans
