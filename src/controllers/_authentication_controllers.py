@@ -1,18 +1,8 @@
-import flask
 from flask import request
-from config import client
+from src.config.soap_client import soap_client
 
 
-view = flask.Blueprint("home", __name__)
-
-
-@view.route("/", methods=["GET"])
-def index():
-    return flask.render_template("index.html")
-
-
-@view.route("/auth_login", methods=["POST"])
-def auth_login():
+def login_handler():
     try:
         # Get JSON data from the request
         data = request.json
@@ -26,9 +16,9 @@ def auth_login():
         if not username or not password:
             return {"message": "Required fields are missing in JSON data"}, 400
 
-        result = client.service.auth_login({"username": username, "password": password})
-
-        print(result)
+        result = soap_client.service.auth_login(
+            {"username": username, "password": password}
+        )
 
         if result.auth is not None:
             token = result.auth.token
