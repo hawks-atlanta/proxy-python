@@ -1,6 +1,6 @@
 import json
 from main import app
-from config import client
+from config.soap_client import soap_client
 
 
 def test_view() -> None:
@@ -11,7 +11,7 @@ def test_view() -> None:
 def test_auth_login_successful() -> None:
     registration_data = {"username": "miguel3", "password": "miguel3"}
 
-    registration_result = client.service.account_register(registration_data)
+    registration_result = soap_client.service.account_register(registration_data)
 
     assert registration_result.error is False
 
