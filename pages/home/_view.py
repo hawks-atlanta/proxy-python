@@ -1,12 +1,9 @@
 import flask
 from flask import request
-from zeep import Client
+from config import client
 
 
 view = flask.Blueprint("home", __name__)
-
-# connect
-client = Client("http://localhost:8080/service?wsdl")
 
 
 @view.route("/", methods=["GET"])
