@@ -23,26 +23,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/credentials'
+              $ref: "#/components/schemas/credentials"
       responses:
-        '200':
+        "200":
           description: Login succeed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authorization'
-        '401':
+                $ref: "#/components/schemas/authorization"
+        "401":
           description: Invalid credentials
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /register:
     post:
       tags:
@@ -52,26 +52,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/credentials'
+              $ref: "#/components/schemas/credentials"
       responses:
-        '201':
+        "201":
           description: Registration succeed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/authorization'
-        '409':
+                $ref: "#/components/schemas/authorization"
+        "409":
           description: Username already registered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /challenge:
     post:
       tags:
@@ -81,26 +81,26 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authorization'
+              $ref: "#/components/schemas/authorization"
       responses:
-        '200':
+        "200":
           description: Account token is still valid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/account'
-        '401':
+                $ref: "#/components/schemas/account"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /account/password:
     patch:
       tags:
@@ -111,7 +111,7 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/authorization'
+                - $ref: "#/components/schemas/authorization"
                 - type: object
                   properties:
                     currentPassword:
@@ -119,24 +119,24 @@ paths:
                     newPassword:
                       type: string
       responses:
-        '200':
+        "200":
           description: Password updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
 
   /files:
     post:
@@ -152,28 +152,28 @@ paths:
                 fileName:
                   type: string
                 location:
-                  type: string  
+                  type: string
                 file:
-                  type: string 
+                  type: string
       responses:
-        '201':
+        "201":
           description: File created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
 
   /folders:
     post:
@@ -189,26 +189,26 @@ paths:
                 folderName:
                   type: string
                 location:
-                  type: string  #UUID
+                  type: string #UUID
       responses:
-        '201':
+        "201":
           description: Folder created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
 
   /files/shared:
     get:
@@ -216,26 +216,26 @@ paths:
         - Files
       description: Gets the list of shared files
       responses:
-        '200':
+        "200":
           description: List of shared files obtained
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/fileDetailsShared'
-        '401':
+                  $ref: "#/components/schemas/fileDetailsShared"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /files/{fileId}/edit:
     put:
       tags:
@@ -253,24 +253,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: File successfully edited
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /files/{fileId}:
     delete:
       tags:
@@ -283,24 +283,24 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: File successfully deleted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
-          description:  Internal error
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
   /files/{fileId}/move:
     patch:
       tags:
@@ -318,26 +318,25 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: File moved successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-                
-                
+                $ref: "#/components/schemas/statusResponse"
+
   /files/list:
     get:
       tags:
@@ -348,30 +347,30 @@ paths:
           name: location
           required: false
           schema:
-            type: string  
+            type: string
           description: The location (UUID) to list files from
       responses:
-        '200':
+        "200":
           description: List of files in the location
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/fileDetails'  
-        '401':
+                  $ref: "#/components/schemas/fileDetails"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-                
+                $ref: "#/components/schemas/statusResponse"
+
   /files/download/{fileUUID}:
     get:
       tags:
@@ -385,31 +384,31 @@ paths:
             type: string
           description: The UUID of the file to download
       responses:
-        '200':
+        "200":
           description: File downloaded successfully
           content:
-            application/octet-stream: 
+            application/octet-stream:
               schema:
-                type: string  
-                format: binary  
-        '401':
+                type: string
+                format: binary
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '404':
+                $ref: "#/components/schemas/statusResponse"
+        "404":
           description: File not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
+                $ref: "#/components/schemas/statusResponse"
 
   /files/share:
     post:
@@ -420,39 +419,39 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/shareWithReq'  
+              $ref: "#/components/schemas/shareWithReq"
       responses:
-        '200':
+        "200":
           description: File shared successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '400':
+                $ref: "#/components/schemas/statusResponse"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '404':
+                $ref: "#/components/schemas/statusResponse"
+        "404":
           description: File not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-                
+                $ref: "#/components/schemas/statusResponse"
+
   /files/unshare:
     post:
       tags:
@@ -462,39 +461,39 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/shareWithReq'  
+              $ref: "#/components/schemas/shareWithReq"
       responses:
-        '200':
+        "200":
           description: File unshared successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '400':
+                $ref: "#/components/schemas/statusResponse"
+        "400":
           description: Bad request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '401':
+                $ref: "#/components/schemas/statusResponse"
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '404':
+                $ref: "#/components/schemas/statusResponse"
+        "404":
           description: File not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-              
+                $ref: "#/components/schemas/statusResponse"
+
   /files/sharedwithwho:
     get:
       tags:
@@ -505,9 +504,9 @@ paths:
           name: fileUUID
           required: true
           schema:
-            type: string  
+            type: string
       responses:
-        '200':
+        "200":
           description: List of users the file is shared with
           content:
             application/json:
@@ -520,26 +519,24 @@ paths:
                       type: string
                       example: sulcud
 
-        '401':
+        "401":
           description: Not authorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '404':
+                $ref: "#/components/schemas/statusResponse"
+        "404":
           description: File not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-        '500':
+                $ref: "#/components/schemas/statusResponse"
+        "500":
           description: Internal error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/statusResponse'
-
-
+                $ref: "#/components/schemas/statusResponse"
 
 components:
   schemas:
@@ -553,8 +550,6 @@ components:
       properties:
         msg:
           type: string
-        succeed:
-          type: boolean
     credentials:
       type: object
       properties:
@@ -592,7 +587,7 @@ components:
         fileUUID:
           type: string
         ownerusername:
-          type: string   
+          type: string
     shareWithReq:
       type: object
       properties:
