@@ -1,7 +1,5 @@
 from flask import request
 from src.config.soap_client import soap_client
-import jwt
-import time
 
 
 def login_handler():
@@ -23,7 +21,7 @@ def login_handler():
         )
 
         if result.auth is not None:
-            jwt = result.auth.token  # noqa: F811
+            jwt = result.auth.token
             return {"msg": "Login successful", "jwt": jwt}, 200
 
         return {"msg": "Invalid credentials"}, 401
@@ -45,31 +43,18 @@ def challenge():
         if not token:
             return {"msg": "Token is missing in JSON data"}, 400
 
-        decoded_token = jwt.decode(token, options={"verify_signature": False})
-        expiration_timestamp = decoded_token.get("exp")
+        # SOAP
+        response = soap_client.service.auth_refresh({"token": token})
 
-        # Get the current timestamp
-        current_timestamp = int(time.time())
-
-        if expiration_timestamp >= current_timestamp:
-            # The token is still valid
-            time_remaining = expiration_timestamp - current_timestamp
-            return {"time_remaining": time_remaining}, 200
+        if response.code == 200:
+            # Successfully updated JWT token
+            new_token = response.auth.token
+            return {"msg": "JWT refreshed successfully", "jwt": new_token}, 200
+        elif response.code == 401:
+            return {"msg": "Token has expired and couldn't be refreshed"}, 401
         else:
-            # Perform the SOAP call to refresh the token
-            response = soap_client.service.auth_refresh({"token": token})
+            return {"msg": "Unauthorized"}, 401
 
-            if response.code == 200:
-                # Successfully updated JWT token
-                new_token = response.auth.token
-                return {"msg": "JWT refreshed successfully", "jwt": new_token}, 200
-            elif response.code == 401:
-                return {"msg": "Token has expired and couldn't be refreshed"}, 401
-            else:
-                return {"msg": "Unauthorized"}, 401
-
-    except jwt.DecodeError:
-        return {"msg": "Invalid token"}, 401
     except Exception as e:
         print("Error:", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
