@@ -43,14 +43,19 @@ def challenge():
         if not token:
             return {"msg": "Token is missing in JSON data"}, 400
 
-        # SOAP
         response = soap_client.service.auth_refresh({"token": token})
 
-        return {
-            "msg": "JWT refreshed successfully",
-            "jwt": response.auth.token,
-        }, response.code
+        print(response)
+
+        if hasattr(response, "auth") and hasattr(response.auth, "token"):
+            jwt = response.auth.token
+            return {
+                "msg": "JWT refreshed successfully",
+                "jwt": jwt,
+            }, 200
+        else:
+            return {"msg": response.msg}, response.code
 
     except Exception as e:
         print("Error:", str(e))
-        return {"msg": "Internal error", "error": str(e)}, 500
+        return {"msg": "Internal error: " + str(e)}, 500
