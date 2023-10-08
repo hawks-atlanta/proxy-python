@@ -46,14 +46,10 @@ def challenge():
         # SOAP
         response = soap_client.service.auth_refresh({"token": token})
 
-        if response.code == 200:
-            # Successfully updated JWT token
-            new_token = response.auth.token
-            return {"msg": "JWT refreshed successfully", "jwt": new_token}, 200
-        elif response.code == 401:
-            return {"msg": "Token has expired and couldn't be refreshed"}, 401
-        else:
-            return {"msg": "Unauthorized"}, 401
+        return {
+            "msg": "JWT refreshed successfully",
+            "jwt": response.auth.token,
+        }, response.code
 
     except Exception as e:
         print("Error:", str(e))

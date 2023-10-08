@@ -40,4 +40,15 @@ def test_auth_login_missing_fields() -> None:
 
     assert (
         json.loads(response.data)["msg"] == "Required fields are missing in JSON data"
-    )  # noqa: E501
+    )
+
+
+def test_auth_refresh_missing_token() -> None:
+    # Simulate a request without a token
+    data = {"jwt": ""}
+
+    response = app.test_client().post("/auth_refresh", json=data)
+
+    assert response.status_code == 400
+
+    assert json.loads(response.data)["msg"] == "Token is missing in JSON data"
