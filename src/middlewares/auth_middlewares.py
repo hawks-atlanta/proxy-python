@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, abort
+from flask import request, abort, jsonify, make_response
 
 def token_required(f): 
     @wraps(f)
@@ -9,7 +9,11 @@ def token_required(f):
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split("Bearer ")[1]
         if not token:
-            abort(401, 'Token is missing')
+            abort(
+              make_response(
+                jsonify({"msg": "Token is missing"}), 401
+              )
+            )
        
        # Return the function with the token as a parameter
         return f(token, *args, **kwargs)
