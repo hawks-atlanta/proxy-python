@@ -1,46 +1,48 @@
 import json
 from main import app
+from src.lib.faker import fake_username, fake_password
+
+register_test_data = {"username": fake_username(), "password": fake_password()}
 
 
 def test_account_register_successful() -> None:
-    register_data = {"username": "andrea", "password": "Andrea1"}
-
-    response = app.test_client().post("/account_register", json=register_data)
+    register_data = {
+        "username": register_test_data["username"],
+        "password": register_test_data["password"],
+    }
+    response = app.test_client().post("/account/register", json=register_data)
+    json_response = json.loads(response.data)
 
     assert response.status_code == 200
-
     assert json.loads(response.data)["msg"] == "Register succeeded"
-
-    assert "jwt" in json.loads(response.data)
+    assert json_response["jwt"] != ""
 
 
 def test_account_register_missing_fields() -> None:
-    data = {"username": "andrea"}
-
-    response = app.test_client().post("/account_register", json=data)
+    # Empty json
+    data = {}
+    response = app.test_client().post("/account/register", json=data)
 
     assert response.status_code == 400
+    assert json.loads(response.data)["msg"] == "No JSON data provided in the request"
 
+    # Missing password
+    data = {"username": register_test_data["username"]}
+    response = app.test_client().post("/account/register", json=data)
+
+    assert response.status_code == 400
     assert (
         json.loads(response.data)["msg"] == "Required fields are missing in JSON data"
     )
 
 
-def test_account_register_empty_fields() -> None:
-    data = {}
-
-    response = app.test_client().post("/account_register", json=data)
-
-    assert response.status_code == 400
-
-    assert json.loads(response.data)["msg"] == "No JSON data provided in the request"
-
-
 def test_account_register_Username_already_registered() -> None:
-    data = {"username": "andrea", "password": "Andrea1"}
-
-    response = app.test_client().post("/account_register", json=data)
+    data = {
+        "username": register_test_data["username"],
+        "password": register_test_data["password"],
+    }
+    response = app.test_client().post("/account/register", json=data)
+    json_response = json.loads(response.data)
 
     assert response.status_code == 409
-
-    assert json.loads(response.data)["msg"] == "Username already registered"
+    assert json_response["msg"] == "Username already registered"
