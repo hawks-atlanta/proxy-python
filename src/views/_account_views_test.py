@@ -15,7 +15,7 @@ def test_account_register_successful() -> None:
 
     assert response.status_code == 200
     assert json.loads(response.data)["msg"] == "Register succeeded"
-    assert json_response["jwt"] != ""
+    assert json_response["token"] != ""
 
 
 def test_account_register_missing_fields() -> None:
