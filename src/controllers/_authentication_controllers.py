@@ -4,15 +4,12 @@ from src.config.soap_client import soap_client
 
 def login_handler():
     try:
-        # Get JSON data from the request
         data = request.json
-
         if not data:
             return {"msg": "No JSON data provided in the request"}, 400
 
         username = data.get("username")
         password = data.get("password")
-
         if not username or not password:
             return {"msg": "Required fields are missing in JSON data"}, 400
 
@@ -22,40 +19,27 @@ def login_handler():
 
         if result.auth is not None:
             jwt = result.auth.token
-            return {"msg": "Login successful", "jwt": jwt}, 200
+            return {"msg": "Login successful", "token": jwt}, 200
 
         return {"msg": "Invalid credentials"}, 401
 
     except Exception as e:
-        print("SOAP Error:", str(e))
+        print("[Exception] login_handler ->", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
 
 
-def challenge():
+def challenge_handler(token):
     try:
-        data = request.json
-
-        if not data:
-            return {"msg": "No JSON data provided in the request"}, 400
-
-        token = data.get("jwt")
-
-        if not token:
-            return {"msg": "Token is missing in JSON data"}, 400
-
         response = soap_client.service.auth_refresh({"token": token})
-
-        print(response)
-
-        if hasattr(response, "auth") and hasattr(response.auth, "token"):
-            jwt = response.auth.token
+        if hasattr(response.auth, "token"):
+            refreshed_token = response.auth.token
             return {
                 "msg": "JWT refreshed successfully",
-                "jwt": jwt,
+                "token": refreshed_token,
             }, 200
         else:
             return {"msg": response.msg}, response.code
 
     except Exception as e:
-        print("Error:", str(e))
+        print("[Exception] challenge ->", str(e))
         return {"msg": "Internal error: " + str(e)}, 500

@@ -1,5 +1,6 @@
 import flask
 from src.controllers import _authentication_controllers
+from src.middlewares import auth_middlewares
 
 views = flask.Blueprint("authentication", __name__)
 
@@ -10,5 +11,6 @@ def auth_login():
 
 
 @views.route("/auth_refresh", methods=["POST"])
-def auth_refresh():
-    return _authentication_controllers.challenge()
+@auth_middlewares.token_required
+def auth_refresh(token):
+    return _authentication_controllers.challenge_handler(token)
