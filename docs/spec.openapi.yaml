@@ -14,7 +14,7 @@ tags:
   - name: Files
 
 paths:
-  /login:
+  /auth/login:
     post:
       tags:
         - Authentication
@@ -72,25 +72,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-  /challenge:
+  /auth/refresh:
     post:
       tags:
         - Authorization
+      security: 
+        - bearer: []  
       description: Verifies the received token is still valid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/authorization"
       responses:
         "200":
-          description: Account token is still valid
+          description: The current token is valid and a new token was obtained successfully. 
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/account"
+                type: object
+                properties:
+                  msg: 
+                    type: string
+                    example: "Login successfull"
+                  token: 
+                    type: string
+                    example: "{jwt}"
+        "400":
+          description: JSON body wasn't given or was not valid. 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
         "401":
-          description: Unauthorized
+          description: No authorization header was given.
           content:
             application/json:
               schema:
@@ -539,6 +549,11 @@ paths:
                 $ref: "#/components/schemas/statusResponse"
 
 components:
+  securitySchemes:
+      bearer:            
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
   schemas:
     account:
       type: object
