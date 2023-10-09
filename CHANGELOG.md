@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.8 (2023-10-09)
+
+### 0.0.7 (2023-10-09)
+
+### 0.0.6 (2023-10-08)
+
+
+### Features
+
+* endpoint challenge ([#33](https://github.com/hawks-atlanta/proxy-python/issues/33)) ([ee78fb6](https://github.com/hawks-atlanta/proxy-python/commit/ee78fb6864d0f6616464439c5c177884e514cf29))
+
 ### 0.0.5 (2023-10-04)
 
 
