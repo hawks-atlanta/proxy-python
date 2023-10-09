@@ -39,3 +39,4 @@ urllib3==2.0.4
 Werkzeug==2.3.7
 wrapt==1.15.0
 zeep==4.2.1
+flask-cors==4.0.0
