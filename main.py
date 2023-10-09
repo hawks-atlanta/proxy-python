@@ -10,4 +10,3 @@ CORS(app, resources={r"/auth/*": {"origins": "http://localhost:5173"}})
 
 if __name__ == "__main__":
     app.run(debug=True)
-
