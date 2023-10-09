@@ -9,7 +9,7 @@ def token_required(f):
         token = None
         if "Authorization" in request.headers:
             token = request.headers["Authorization"].split("Bearer ")[1]
-        if not token:
+        if not token or token == "":
             abort(make_response(jsonify({"msg": "Token is missing"}), 401))
 
         # Return the function with the token as a parameter
