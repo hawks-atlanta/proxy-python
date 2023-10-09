@@ -5,9 +5,6 @@ from src.config.soap_client import soap_client
 def login_handler():
     try:
         data = request.json
-        if not data:
-            return {"msg": "No JSON data provided in the request"}, 400
-
         username = data.get("username")
         password = data.get("password")
         if not username or not password:
