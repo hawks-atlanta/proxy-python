@@ -22,10 +22,10 @@ def register_handler():
 
         if result.auth is not None:
             jwt = result.auth.token
-            return {"msg": "Register succeeded", "jwt": jwt}, 200
+            return {"msg": "Register succeeded", "token": jwt}, 200
 
         return {"msg": "Username already registered"}, 409
 
     except Exception as e:
-        print("SOAP Error:", str(e))
+        print("[Exception] register_handler ->", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
