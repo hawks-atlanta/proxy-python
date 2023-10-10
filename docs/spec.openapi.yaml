@@ -15,35 +15,37 @@ tags:
 
 paths:
   /auth/login:
-  post:
-    tags:
-      - Authentication
-    description: Authenticates to the server
-    requestBody:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/credentials"
-    responses:
-      "201":
-        description: Login succeeded
+    post:
+      tags:
+        - Authentication
+      security:
+        - bearer: []
+      description: Authenticates to the server
+      requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/authorization"
-      "401":
-        description: Invalid credentials
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/statusResponse"
-      "500":
-        description: Internal error
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/statusResponse"
-
+              $ref: "#/components/schemas/credentials"
+      responses:
+        "201":
+          description: Login succeeded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/authorization"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+  
   /auth/refresh:
     post:
       tags:
@@ -88,6 +90,8 @@ paths:
     post:
       tags:
         - Authentication
+      security:
+        - bearer: []
       description: Register a new user in the service
       requestBody:
         content:
@@ -149,7 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/errorResponse"
+                $ref: "#/components/schemas/statusResponse"
 
   /files/download/{fileUUID}:
     get:
@@ -484,18 +488,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-
+              
   /account/password:
     patch:
       tags:
         - Account
+      security:
+        - bearer: []
       description: Updates the username password
       requestBody:
         content:
           application/json:
             schema:
               allOf:
-                - $ref: "#/components/schemas/authorization"
                 - type: object
                   properties:
                     currentPassword:
@@ -557,42 +562,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/{fileId}/edit:
-    put:
-      tags:
-        - Files
-      description: Edit an existing file
-      parameters:
-        - in: path
-          name: fileId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: newContent
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: File successfully edited
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-
 components:
   securitySchemes:
     bearer:
@@ -600,11 +569,6 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    account:
-      type: object
-      properties:
-        uuid:
-          type: string
     statusResponse:
       type: object
       properties:
