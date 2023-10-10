@@ -43,7 +43,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-  /register:
+  /account/register:
     post:
       tags:
         - Authentication
@@ -577,7 +577,7 @@ components:
     authorization:
       type: object
       properties:
-        jwt:
+        token:
           type: string
     fileDetails:
       type: object
