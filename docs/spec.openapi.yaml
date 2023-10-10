@@ -18,8 +18,6 @@ paths:
     post:
       tags:
         - Authentication
-      security:
-        - bearer: []
       description: Authenticates to the server
       requestBody:
         content:
@@ -45,7 +43,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-  
+
   /auth/refresh:
     post:
       tags:
@@ -89,9 +87,7 @@ paths:
   /account/register:
     post:
       tags:
-        - Authentication
-      security:
-        - bearer: []
+        - account
       description: Register a new user in the service
       requestBody:
         content:
@@ -122,6 +118,8 @@ paths:
     post:
       tags:
         - File
+      security:
+        - bearer: []
       description: Upload a file
       requestBody:
         content:
@@ -159,6 +157,8 @@ paths:
     get:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Download a file by UUID
       parameters:
         - in: path
@@ -194,47 +194,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files:
-    post:
-      tags:
-        - Files
-      description: Create a new file
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                fileName:
-                  type: string
-                location:
-                  type: string
-                file:
-                  type: string
-      responses:
-        "201":
-          description: File created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-
   /files/{fileId}/move:
     patch:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Move an existing file to a different location
       parameters:
         - in: path
@@ -273,6 +238,8 @@ paths:
     delete:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Deletes an existing file by fileId
       parameters:
         - in: path
@@ -305,6 +272,8 @@ paths:
     get:
       tags:
         - Files
+      security:
+        - bearer: []
       description: List files in a given location
       parameters:
         - in: query
@@ -339,6 +308,8 @@ paths:
     get:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Gets the list of shared files
       responses:
         "200":
@@ -366,6 +337,8 @@ paths:
     post:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Share a file with a user
       requestBody:
         content:
@@ -408,6 +381,8 @@ paths:
     get:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Get the list of users the file is shared with
       parameters:
         - in: query
@@ -451,6 +426,8 @@ paths:
     post:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Unshare a file with a user
       requestBody:
         content:
@@ -488,11 +465,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-              
+
   /account/password:
     patch:
       tags:
-        - Account
+        - account
       security:
         - bearer: []
       description: Updates the username password
@@ -501,6 +478,7 @@ paths:
           application/json:
             schema:
               allOf:
+                - $ref: "#/components/schemas/account"
                 - type: object
                   properties:
                     currentPassword:
@@ -531,6 +509,8 @@ paths:
     post:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Create a new folder
       requestBody:
         content:
@@ -569,6 +549,11 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
+    account:
+      type: object
+      properties:
+        uuid:
+          type: string
     statusResponse:
       type: object
       properties:
