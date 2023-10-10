@@ -47,7 +47,7 @@ paths:
   /auth/refresh:
     post:
       tags:
-        - Authorization
+        - Authentication
       security:
         - bearer: []
       description: Verifies the received token is still valid
@@ -87,7 +87,7 @@ paths:
   /account/register:
     post:
       tags:
-        - account
+        - Account
       description: Register a new user in the service
       requestBody:
         content:
@@ -117,7 +117,7 @@ paths:
   /file/upload:
     post:
       tags:
-        - File
+        - Files
       security:
         - bearer: []
       description: Upload a file
@@ -469,7 +469,7 @@ paths:
   /account/password:
     patch:
       tags:
-        - account
+        - Account
       security:
         - bearer: []
       description: Updates the username password
