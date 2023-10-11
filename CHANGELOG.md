@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.10 (2023-10-11)
+
+
+### Bug Fixes
+
+* Enable all CORS origins ([#44](https://github.com/hawks-atlanta/proxy-python/issues/44)) ([9f8ad6a](https://github.com/hawks-atlanta/proxy-python/commit/9f8ad6ae4dee09b18bd7e1f44d36f0c0ee7f4ced))
+
 ### 0.0.9 (2023-10-09)
 
 
