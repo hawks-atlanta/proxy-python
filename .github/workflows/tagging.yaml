@@ -16,7 +16,8 @@ jobs:
         name: Changelog
         id: changelog
         with:
-          git-user-nane: "Antonio Donis"
+          git-user-name: "Antonio Donis"
           git-user-email: "antoniojosedonishung@gmail.com"
           git-message: "[ci skip] chore(release): {version}"
+          git-branch: "dev"
           version-file: "version.json"
