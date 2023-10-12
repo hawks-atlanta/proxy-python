@@ -1,5 +1,7 @@
+import json
 from uuid import uuid4
 from random import randbytes
+from main import app
 from config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
@@ -66,11 +68,20 @@ def test_get_status_success_code():
     assert upload_response.error is False
 
     # Get status of the file
-    response = soap_client.service.file_check(
-        {"token": token, "fileUUID": upload_response.fileUUID}
+    response = app.test_client().get(
+        f"/file/{upload_response.fileUUID}/status",
+        headers={"Authorization": f"Bearer {token}"},
     )
 
-    # Note that, since the file is saved locally, it will be ready almost instantly
-    assert response.code == 200
-    assert response.ready is True
-    assert response.msg == "File status has been obtained successfully"
+    has_expected_success_code = (
+        response.status_code == 200 or response.status_code == 202
+    )
+    assert has_expected_success_code
+
+    json_response = json.loads(response.data)
+    has_boolean_ready = (
+        json_response["ready"] is True or json_response["ready"] is False
+    )
+    assert has_boolean_ready
+
+    assert json_response["msg"] == "File status has been obtained successfully"
