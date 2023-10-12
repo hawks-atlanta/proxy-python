@@ -19,5 +19,4 @@ jobs:
           git-user-name: "Antonio Donis"
           git-user-email: "antoniojosedonishung@gmail.com"
           git-message: "[ci skip] chore(release): {version}"
-          git-branch: "dev"
           version-file: "version.json"
