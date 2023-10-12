@@ -11,7 +11,10 @@ def check_state_handler(token, file_uuid):
         if not has_success_code:
             return {"msg": response.msg}, response.code
 
-        return {"msg": response.msg, "ready": response.ready}, response.code
+        return {
+            "msg": "File status has been obtained successfully",
+            "ready": response.ready,
+        }, response.code
     except Exception as e:
         print("[Exception] check_state_handler ->", str(e))
         return {"msg": "There was an error checking the file state"}, 500
