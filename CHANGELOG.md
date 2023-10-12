@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.1.0...v0.4.0) (2023-10-12)
+
+
+### Features
+
+* Endpoint to get the file status ([#49](https://github.com/hawks-atlanta/proxy-python/issues/49)) ([af95070](https://github.com/hawks-atlanta/proxy-python/commit/af9507083f7b2b5a833cb0ac50c865806778ca5d))
+
+
+
 # [0.1.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.11...v0.1.0) (2023-10-12)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * Register endpoint ([#39](https://github.com/hawks-atlanta/proxy-python/issues/39)) ([38392d4](https://github.com/hawks-atlanta/proxy-python/commit/38392d476c718eacc7e70e0bed98de08f2f1d186))
-
-
-
-## [0.0.8](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.7...v0.0.8) (2023-10-09)
 
 
 
