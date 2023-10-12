@@ -10,7 +10,6 @@ info:
 tags:
   - name: Authentication
   - name: Account
-  - name: Authorization
   - name: Files
 
 paths:
@@ -130,12 +129,12 @@ paths:
                 file:
                   type: string
                   format: binary
-                token:
+                fileName:
                   type: string
+                  example: "picture"
                 location:
                   type: string
-                  description: "1"
-                  readOnly: true
+                  example: "5295d524-aafc-407c-96ed-adae2cd5047a"
       responses:
         "201":
           description: File upload successful
@@ -153,7 +152,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/download/{fileUUID}:
+  /file/download/{fileUUID}:
     get:
       tags:
         - Files
@@ -171,7 +170,7 @@ paths:
         "200":
           description: File downloaded successfully
           content:
-            application/octet-stream:
+            application/file:
               schema:
                 type: string
                 format: binary
@@ -194,7 +193,46 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/{fileId}/move:
+  /file/check/{fileUUID}:
+    get:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Check if the given file is ready
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The state of the file was retreived successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/statusResponse"
+                type: object
+                properties:
+                  ready:
+                    type: boolean
+                    example: true
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/{fileUUID}/move:
     patch:
       tags:
         - Files
@@ -203,17 +241,20 @@ paths:
       description: Move an existing file to a different location
       parameters:
         - in: path
-          name: fileId
+          name: fileUUID
           required: true
           schema:
             type: string
           description: The ID of the file to move
-        - in: query
-          name: newLocation
-          required: true
-          schema:
-            type: string
-          description: The new location to move the file to
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targetDirectoryUUID:
+                  type: string
+                  example: "fbef8fdb-d16e-436b-8835-b96091b0b9ce"
       responses:
         "200":
           description: File moved successfully
@@ -234,16 +275,59 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/{fileId}:
+  /file/{fileUUID}/rename:
+    patch:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Move an existing file to a different location
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to move
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  type: string
+                  example: "awesome_name"
+      responses:
+        "200":
+          description: File moved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/{fileUUID}:
     delete:
       tags:
         - Files
       security:
         - bearer: []
-      description: Deletes an existing file by fileId
+      description: Deletes an existing file by fileUUID
       parameters:
         - in: path
-          name: fileId
+          name: fileUUID
           required: true
           schema:
             type: string
@@ -268,7 +352,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/list:
+  /file/list:
     get:
       tags:
         - Files
@@ -304,7 +388,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/shared:
+  /file/shared:
     get:
       tags:
         - Files
@@ -333,7 +417,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/share:
+  /file/share:
     post:
       tags:
         - Files
@@ -377,7 +461,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/sharedwithwho:
+  /file/shared-with-who:
     get:
       tags:
         - Files
@@ -422,7 +506,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/unshare:
+  /file/unshare:
     post:
       tags:
         - Files
@@ -472,19 +556,17 @@ paths:
         - Account
       security:
         - bearer: []
-      description: Updates the username password
+      description: Updates the password
       requestBody:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: "#/components/schemas/account"
-                - type: object
-                  properties:
-                    currentPassword:
-                      type: string
-                    newPassword:
-                      type: string
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
       responses:
         "200":
           description: Password updated successfully
@@ -549,11 +631,6 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    account:
-      type: object
-      properties:
-        uuid:
-          type: string
     statusResponse:
       type: object
       properties:
@@ -573,30 +650,38 @@ components:
       properties:
         token:
           type: string
+          example: "{jwt}"
     fileDetails:
       type: object
       properties:
-        fileName:
+        name:
           type: string
-        fileSize:
+          example: "pixture.png"
+        size:
           type: integer
+          example: 4687
         isFile:
           type: boolean
-        fileUUID:
+        uuid:
           type: string
+          example: "5295d524-aafc-407c-96ed-adae2cd5047a"
     fileDetailsShared:
       type: object
       properties:
-        fileName:
+        name:
           type: string
-        fileSize:
+          example: "pixture.png"
+        size:
           type: integer
+          example: 4687
         isFile:
           type: boolean
-        fileUUID:
+        uuid:
           type: string
+          example: "5295d524-aafc-407c-96ed-adae2cd5047a"
         ownerusername:
           type: string
+          example: "CocoTheCat"
     shareWithReq:
       type: object
       properties:
