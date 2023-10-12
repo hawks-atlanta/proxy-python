@@ -10,19 +10,20 @@ def upload_file_handler():
         if not data:
             return {"msg": "No JSON data provided in the request"}, 400
 
+        file = data.get("file")
         fileName = data.get("fileName")
         location = data.get("location")
-        file = data.get("file")
 
         if not fileName or not location or not file:
             return {"msg": "Failed field validation."}, 400
 
-        result = soap_client.service.files(
-            {"fileName": fileName, "location": location, "file": file}
+        result = soap_client.service.file_upload(
+            {"file": file, "location": location, "fileName": fileName}
         )
 
         if result.fileUUID is not None:
-            return {"msg": "File is being uploaded."}, 201
+            fileId = result.fileUUID
+            return {"msg": "File upload successful.", "fileUUID": fileId}, 201
 
         return {"msg": "Bad request. File is too large."}, 413
 

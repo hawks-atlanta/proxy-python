@@ -4,9 +4,9 @@ from main import app
 
 def test_file_upload_successful() -> None:
     file_data = {
+        "file": "byte[]",
         "fileName": "picture.png",
         "location": "5295d524-aafc-407c-96ed-adae2cd5047a",
-        "file": "byte[]",
     }
     response = app.test_client().patch("/file/upload", json=file_data)
 
