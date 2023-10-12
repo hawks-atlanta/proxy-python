@@ -28,4 +28,4 @@ def register_handler():
 
     except Exception as e:
         print("[Exception] register_handler ->", str(e))
-        return {"msg": "Internal error", "error": str(e)}, 500
+        return {"msg": "There was an error registering the user"}, 500

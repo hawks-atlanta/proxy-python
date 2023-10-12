@@ -22,7 +22,7 @@ def login_handler():
 
     except Exception as e:
         print("[Exception] login_handler ->", str(e))
-        return {"msg": "Internal error", "error": str(e)}, 500
+        return {"msg": "There was an error logging in"}, 500
 
 
 def challenge_handler(token):
@@ -39,4 +39,4 @@ def challenge_handler(token):
 
     except Exception as e:
         print("[Exception] challenge ->", str(e))
-        return {"msg": "Internal error: " + str(e)}, 500
+        return {"msg": "There was an error validating or refreshing the session"}, 500
