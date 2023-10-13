@@ -5,6 +5,7 @@ from main import app
 from config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
+
 get_status_test_data = {
     "username": fake_username(),
     "password": fake_password(),
@@ -85,3 +86,66 @@ def test_get_status_success_code():
     assert has_boolean_ready
 
     assert json_response["msg"] == "File status has been obtained successfully"
+
+
+def test_rename():
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": get_status_test_data["username"],
+            "password": get_status_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    new_file_data = {
+        "name": "hello.txt",
+        "content": randbytes(1024),
+    }
+    create_file_response = soap_client.service.file_upload(
+        {
+            "token": token,
+            "fileName": new_file_data["name"],
+            "fileContent": new_file_data["content"],
+            "location": None,
+        }
+    )
+    assert create_file_response.error is False
+
+    new_name = "new_file_name_slisth112333"
+    response = soap_client.service.file_rename(
+        {"token": token, "fileUUID": create_file_response.fileUUID, "newName": new_name}
+    )
+
+    assert response.error is False
+    assert response.code == 204
+    assert "Rename successful" in response.msg
+
+
+def test_same_name():
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": get_status_test_data["username"],
+            "password": get_status_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    new_file_data = {
+        "name": "test_file.txt",
+        "content": randbytes(1024),
+    }
+    create_file_response = soap_client.service.file_upload(
+        {
+            "token": token,
+            "fileName": new_file_data["name"],
+            "fileContent": new_file_data["content"],
+            "location": None,
+        }
+    )
+    assert create_file_response.error is True
+    assert create_file_response.code == 409
+    assert "A file with the same name already exists" in create_file_response.msg
