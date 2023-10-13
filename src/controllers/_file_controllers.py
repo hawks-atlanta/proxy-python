@@ -25,11 +25,10 @@ def rename_handler(token, file_uuid, new_name):
         request_data = {"token": token, "fileUUID": file_uuid, "newName": new_name}
         response = soap_client.service.file_rename(request_data)
 
-        has_success_code = str(response.code).startswith("20")
-        if has_success_code:
-            return {"msg": "File renamed successfully"}, 200
+        if response["error"] is True:
+            return {"msg": response["msg"]}, 400
         else:
-            return {"msg": response.msg}, 400
+            return {"msg": "File renamed successfully"}, 200
 
     except Exception:
         return {"msg": "There was an error renaming the file"}, 500
