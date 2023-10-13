@@ -15,5 +15,4 @@ def file_check(token, file_uuid):
 @views.route("/file/<string:file_uuid>/rename", methods=["PATCH"])
 @auth_middlewares.token_required
 def file_rename(token, file_uuid):
-    new_name = flask.request.json.get("newName")
-    return _file_controllers.rename_handler(token, file_uuid, new_name)
+    return _file_controllers.rename_handler(token, file_uuid)
