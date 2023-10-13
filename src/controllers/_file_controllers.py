@@ -18,3 +18,18 @@ def check_state_handler(token, file_uuid):
     except Exception as e:
         print("[Exception] check_state_handler ->", str(e))
         return {"msg": "There was an error checking the file state"}, 500
+
+
+def rename_handler(token, file_uuid, new_name):
+    try:
+        request_data = {"token": token, "fileUUID": file_uuid, "newName": new_name}
+        response = soap_client.service.file_rename(request_data)
+
+        has_success_code = str(response.code).startswith("20")
+        if has_success_code:
+            return {"msg": "File renamed successfully"}, 200
+        else:
+            return {"msg": response.msg}, 400
+
+    except Exception:
+        return {"msg": "There was an error renaming the file"}, 500
