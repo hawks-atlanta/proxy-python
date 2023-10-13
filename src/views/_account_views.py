@@ -1,4 +1,5 @@
 import flask
+from src.middlewares import auth_middlewares
 from src.controllers import _account_controllers
 
 views = flask.Blueprint("account", __name__)
@@ -10,5 +11,6 @@ def account_register():
 
 
 @views.route("/account/password", methods=["PATCH"])
-def account_password():
-    return _account_controllers.password_handler()
+@auth_middlewares.token_required
+def account_password(token):
+    return _account_controllers.update_password_handler(token)
