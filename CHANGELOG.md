@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.5.0...v0.6.0) (2023-10-13)
+
+
+### Features
+
+* Update password ([#51](https://github.com/hawks-atlanta/proxy-python/issues/51)) ([395b44b](https://github.com/hawks-atlanta/proxy-python/commit/395b44bf9223cf1126521f80ac0ae1796d2207de))
+
+
+
 # [0.5.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.4.0...v0.5.0) (2023-10-13)
 
 
@@ -26,15 +35,6 @@
 
 
 ## [0.0.11](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.10...v0.0.11) (2023-10-11)
-
-
-
-## [0.0.10](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.9...v0.0.10) (2023-10-11)
-
-
-### Bug Fixes
-
-* Enable all CORS origins ([#44](https://github.com/hawks-atlanta/proxy-python/issues/44)) ([9f8ad6a](https://github.com/hawks-atlanta/proxy-python/commit/9f8ad6ae4dee09b18bd7e1f44d36f0c0ee7f4ced))
 
 
 
