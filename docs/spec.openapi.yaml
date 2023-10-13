@@ -281,14 +281,14 @@ paths:
         - Files
       security:
         - bearer: []
-      description: Move an existing file to a different location
+      description: Rename an existing file
       parameters:
         - in: path
           name: fileUUID
           required: true
           schema:
             type: string
-          description: The ID of the file to move
+          description: The ID of the file to rename
       requestBody:
         content:
           application/json:
@@ -297,10 +297,10 @@ paths:
               properties:
                 newName:
                   type: string
-                  example: "awesome_name"
+                  example: "new_file_name"
       responses:
         "200":
-          description: File moved successfully
+          description: File renamed successfully
           content:
             application/json:
               schema:

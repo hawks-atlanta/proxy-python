@@ -10,3 +10,9 @@ views = flask.Blueprint("file", __name__)
 @auth_middlewares.token_required
 def file_check(token, file_uuid):
     return _file_controllers.check_state_handler(token, file_uuid)
+
+
+@views.route("/file/<string:file_uuid>/rename", methods=["PATCH"])
+@auth_middlewares.token_required
+def file_rename(token, file_uuid):
+    return _file_controllers.rename_handler(token, file_uuid)
