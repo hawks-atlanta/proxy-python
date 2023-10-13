@@ -9,7 +9,7 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     environment:
-      METADATA_BASEURL: http://metadata:8080
+      METADATA_BASEURL: http://metadata:8080/api/v1
       AUTHENTICATION_BASEURL: http://authentication:8080
       WORKER_HOST: worker
       WORKER_PORT: 1099

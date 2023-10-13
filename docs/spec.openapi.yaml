@@ -10,7 +10,6 @@ info:
 tags:
   - name: Authentication
   - name: Account
-  - name: Authorization
   - name: Files
 
 paths:
@@ -25,8 +24,8 @@ paths:
             schema:
               $ref: "#/components/schemas/credentials"
       responses:
-        "200":
-          description: Login succeed
+        "201":
+          description: Login succeeded
           content:
             application/json:
               schema:
@@ -43,11 +42,52 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-  /account/register:
+
+  /auth/refresh:
     post:
       tags:
         - Authentication
-      description: Register the new user in the service
+      security:
+        - bearer: []
+      description: Verifies the received token is still valid
+      responses:
+        "200":
+          description: The current token is valid, and a new token was obtained successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    example: "Token refreshed successfully"
+                  token:
+                    type: string
+                    example: "{new_jwt}"
+        "400":
+          description: JSON body wasn't given or was not valid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "401":
+          description: No authorization header was given or the token is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /account/register:
+    post:
+      tags:
+        - Account
+      description: Register a new user in the service
       requestBody:
         content:
           application/json:
@@ -55,88 +95,13 @@ paths:
               $ref: "#/components/schemas/credentials"
       responses:
         "201":
-          description: Registration succeed
+          description: Registration successful
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/authorization"
         "409":
-          description: Username already registered
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-  /auth/refresh:
-    post:
-      tags:
-        - Authorization
-      security: 
-        - bearer: []  
-      description: Verifies the received token is still valid
-      responses:
-        "200":
-          description: The current token is valid and a new token was obtained successfully. 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  msg: 
-                    type: string
-                    example: "Login successfull"
-                  token: 
-                    type: string
-                    example: "{jwt}"
-        "400":
-          description: JSON body wasn't given or was not valid. 
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: No authorization header was given.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-  /account/password:
-    patch:
-      tags:
-        - Account
-      description: Updates the username password
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: "#/components/schemas/authorization"
-                - type: object
-                  properties:
-                    currentPassword:
-                      type: string
-                    newPassword:
-                      type: string
-      responses:
-        "200":
-          description: Password updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Unauthorized
+          description: Username is already registered
           content:
             application/json:
               schema:
@@ -148,30 +113,112 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files:
+  /file/upload:
     post:
       tags:
         - Files
-      description: Create a new file
+      security:
+        - bearer: []
+      description: Upload a file
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: object
               properties:
-                fileName:
-                  type: string
-                location:
-                  type: string
                 file:
                   type: string
+                  format: binary
+                fileName:
+                  type: string
+                  example: "picture"
+                location:
+                  type: string
+                  example: "5295d524-aafc-407c-96ed-adae2cd5047a"
       responses:
         "201":
-          description: File created successfully
+          description: File upload successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileUUID:
+                    type: string
+        "500":
+          description: Internal Server Error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
+
+  /file/download/{fileUUID}:
+    get:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Download a file by UUID
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The UUID of the file to download
+      responses:
+        "200":
+          description: File downloaded successfully
+          content:
+            application/file:
+              schema:
+                type: string
+                format: binary
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/check/{fileUUID}:
+    get:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Check if the given file is ready
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The state of the file was retreived successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/statusResponse"
+                type: object
+                properties:
+                  ready:
+                    type: boolean
+                    example: true
         "401":
           description: Not authorized
           content:
@@ -185,148 +232,29 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /folders:
-    post:
+  /file/{fileUUID}/move:
+    patch:
       tags:
         - Files
-      description: Create a new folder
+      security:
+        - bearer: []
+      description: Move an existing file to a different location
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to move
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                folderName:
+                targetDirectoryUUID:
                   type: string
-                location:
-                  type: string #UUID
-      responses:
-        "201":
-          description: Folder created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-
-  /files/shared:
-    get:
-      tags:
-        - Files
-      description: Gets the list of shared files
-      responses:
-        "200":
-          description: List of shared files obtained
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/fileDetailsShared"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-  /files/{fileId}/edit:
-    put:
-      tags:
-        - Files
-      description: Edit an existing file
-      parameters:
-        - in: path
-          name: fileId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: newContent
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: File successfully edited
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-  /files/{fileId}:
-    delete:
-      tags:
-        - Files
-      description: Deletes an existing file
-      parameters:
-        - in: path
-          name: fileId
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: File successfully deleted
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "401":
-          description: Not authorized
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-        "500":
-          description: Internal error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/statusResponse"
-  /files/{fileId}/move:
-    patch:
-      tags:
-        - Files
-      description: Move an existing file to a different location
-      parameters:
-        - in: path
-          name: fileId
-          required: true
-          schema:
-            type: string
-        - in: query
-          name: newLocation
-          required: true
-          schema:
-            type: string
+                  example: "fbef8fdb-d16e-436b-8835-b96091b0b9ce"
       responses:
         "200":
           description: File moved successfully
@@ -347,10 +275,89 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/list:
+  /file/{fileUUID}/rename:
+    patch:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Rename an existing file
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to rename
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newName:
+                  type: string
+                  example: "new_file_name"
+      responses:
+        "200":
+          description: File renamed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/{fileUUID}:
+    delete:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Deletes an existing file by fileUUID
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to delete
+      responses:
+        "200":
+          description: File successfully deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/list:
     get:
       tags:
         - Files
+      security:
+        - bearer: []
       description: List files in a given location
       parameters:
         - in: query
@@ -381,34 +388,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/download/{fileUUID}:
+  /file/shared:
     get:
       tags:
         - Files
-      description: Download a file by UUID
-      parameters:
-        - in: path
-          name: fileUUID
-          required: true
-          schema:
-            type: string
-          description: The UUID of the file to download
+      security:
+        - bearer: []
+      description: Gets the list of shared files
       responses:
         "200":
-          description: File downloaded successfully
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-        "401":
-          description: Not authorized
+          description: List of shared files obtained
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/statusResponse"
-        "404":
-          description: File not found
+                type: array
+                items:
+                  $ref: "#/components/schemas/fileDetailsShared"
+        "401":
+          description: Not authorized
           content:
             application/json:
               schema:
@@ -420,10 +417,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/share:
+  /file/share:
     post:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Share a file with a user
       requestBody:
         content:
@@ -462,10 +461,57 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/unshare:
+  /file/shared-with-who:
+    get:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Get the list of users the file is shared with
+      parameters:
+        - in: query
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of users the file is shared with
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: string
+                      example: sulcud
+        "401":
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /file/unshare:
     post:
       tags:
         - Files
+      security:
+        - bearer: []
       description: Unshare a file with a user
       requestBody:
         content:
@@ -504,39 +550,69 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /files/sharedwithwho:
-    get:
+  /account/password:
+    patch:
       tags:
-        - Files
-      description: Get the list of users the file is shared with
-      parameters:
-        - in: query
-          name: fileUUID
-          required: true
-          schema:
-            type: string
+        - Account
+      security:
+        - bearer: []
+      description: Updates the password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
       responses:
         "200":
-          description: List of users the file is shared with
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      type: string
-                      example: sulcud
-
-        "401":
-          description: Not authorized
+          description: Password updated successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/statusResponse"
-        "404":
-          description: File not found
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+
+  /folders:
+    post:
+      tags:
+        - Files
+      security:
+        - bearer: []
+      description: Create a new folder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                folderName:
+                  type: string
+                location:
+                  type: string #UUID
+      responses:
+        "201":
+          description: Folder created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/statusResponse"
+        "401":
+          description: Not authorized
           content:
             application/json:
               schema:
@@ -550,16 +626,11 @@ paths:
 
 components:
   securitySchemes:
-      bearer:            
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
-    account:
-      type: object
-      properties:
-        uuid:
-          type: string
     statusResponse:
       type: object
       properties:
@@ -579,30 +650,38 @@ components:
       properties:
         token:
           type: string
+          example: "{jwt}"
     fileDetails:
       type: object
       properties:
-        fileName:
+        name:
           type: string
-        fileSize:
+          example: "pixture.png"
+        size:
           type: integer
+          example: 4687
         isFile:
           type: boolean
-        fileUUID:
+        uuid:
           type: string
+          example: "5295d524-aafc-407c-96ed-adae2cd5047a"
     fileDetailsShared:
       type: object
       properties:
-        fileName:
+        name:
           type: string
-        fileSize:
+          example: "pixture.png"
+        size:
           type: integer
+          example: 4687
         isFile:
           type: boolean
-        fileUUID:
+        uuid:
           type: string
+          example: "5295d524-aafc-407c-96ed-adae2cd5047a"
         ownerusername:
           type: string
+          example: "CocoTheCat"
     shareWithReq:
       type: object
       properties:
