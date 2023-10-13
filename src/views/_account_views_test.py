@@ -1,10 +1,11 @@
 import json
 from main import app
+from config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
-register_test_data = {"username": fake_username(), "password": fake_password()}
 
 # REGISTER TEST'S
+register_test_data = {"username": fake_username(), "password": fake_password()}
 
 
 def test_account_register_successful() -> None:
@@ -51,47 +52,93 @@ def test_account_register_Username_already_registered() -> None:
 
 
 # PASSWORD UPDATE TEST'S
+update_password_test_data = {"username": fake_username(), "password": fake_password()}
 
 
-def test_account_password_successful() -> None:
+def test_update_password_success() -> None:
+    # Register test user
+    register_response = soap_client.service.account_register(
+        {
+            "username": update_password_test_data["username"],
+            "password": update_password_test_data["password"],
+        }
+    )
+    assert register_response.error is False
+
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": update_password_test_data["username"],
+            "password": update_password_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    # Update the password
     change_data = {
-        "oldpassword": "Andrea1",
-        "newpassword": "Andrea2",
-        "token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTk3NjM1MjcsInV1aWQiOiJjNjU0NmFkMS1jZWFkLTQ5MmYtODkzOS0xY2U0YTc4NzFjMDYifQ.WJV8Qm3KNvr5T_XsHTW2serjTttb93E2GURdNImO0WFwcVBk9BbN8ea1-NPm2rMXEE95EYFc76VaT-kEWt_uZw",
+        "oldPassword": update_password_test_data["password"],
+        "newPassword": "Andrea2",
     }
-    response = app.test_client().patch("/account/password", json=change_data)
+    response = app.test_client().patch(
+        "/account/password",
+        json=change_data,
+        headers={
+            "Authorization": f"Bearer {token}",
+        },
+    )
 
     assert response.status_code == 200
     assert json.loads(response.data)["msg"] == "Password updated successfully"
+    update_password_test_data["password"] = change_data["newPassword"]
 
 
-def test_account_password_missing_fields() -> None:
-    # Empty json
-    data = {}
-    response = app.test_client().patch("/account/password", json=data)
+def test_update_password_missing_fields() -> None:
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": update_password_test_data["username"],
+            "password": update_password_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    # No JSON
+    response = app.test_client().patch(
+        "/account/password", headers={"Authorization": f"Bearer {token}"}
+    )
 
     assert response.status_code == 400
-    assert json.loads(response.data)["msg"] == "No JSON data provided in the request"
+    assert (
+        json.loads(response.data)["msg"] == "Invalid JSON data provided in the request"
+    )
 
-    # Missing TOKEN
-    data = {"oldpassword": "Andrea1", "newpassword": "Andrea2"}
-    response = app.test_client().patch("/account/password", json=data)
+    # Missing fields
+    data = {}
+    response = app.test_client().patch(
+        "/account/password",
+        json=data,
+        headers={
+            "Authorization": f"Bearer {token}",
+        },
+    )
 
     assert response.status_code == 400
     assert (
         json.loads(response.data)["msg"] == "Required fields are missing in JSON data"
     )
 
-def test_account_password_not_valid_token() -> None:
-    # Empty json
-    change_data = {
-        "oldpassword": "Andrea1",
-        "newpassword": "Andrea2",
-        "token": "fghd",
-    }
-    response = app.test_client().patch("/account/password", json=change_data)
+
+def test_update_password_not_valid_token() -> None:
+    change_data = {"oldPassword": "Andrea1", "newPassword": "Andrea2"}
+    response = app.test_client().patch(
+        "/account/password",
+        json=change_data,
+        headers={
+            "Authorization": "Bearer 123",
+        },
+    )
 
     assert response.status_code == 401
-    assert json.loads(response.data)["msg"] == "Unauthorized"
-
-    
+    assert json.loads(response.data)["msg"] == "unauthorized"
