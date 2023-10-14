@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.6.0...v0.7.0) (2023-10-14)
+
+
+### Features
+
+* create a folder ([#52](https://github.com/hawks-atlanta/proxy-python/issues/52)) ([7aca7f2](https://github.com/hawks-atlanta/proxy-python/commit/7aca7f204ce10c37154bcf1ed716cd13ca02c142))
+
+
+
 # [0.6.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.5.0...v0.6.0) (2023-10-13)
 
 
@@ -31,10 +40,6 @@
 ### Features
 
 * update docs openapi ([#41](https://github.com/hawks-atlanta/proxy-python/issues/41)) ([9dc6959](https://github.com/hawks-atlanta/proxy-python/commit/9dc695992b954c02ef84600b2df4d8d89e39d489))
-
-
-
-## [0.0.11](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.10...v0.0.11) (2023-10-11)
 
 
 
