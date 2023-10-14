@@ -1,5 +1,4 @@
 from flask import request
-import os
 from werkzeug.utils import secure_filename
 from src.config.soap_client import soap_client
 from src.lib.helpers import is_valid_uuid
@@ -25,7 +24,7 @@ def upload_file_handler(token):
             return {"msg": "Not valid file location provided"}, 400
 
         # Separate file name from extension
-        fileName = os.path.splitext(secure_filename(file.filename))[0]
+        fileName = secure_filename(file.filename)
         result = soap_client.service.file_upload(
             {
                 "fileName": fileName,

@@ -11,7 +11,7 @@ rename_test_data = {
     "password": fake_password(),
     "file": {
         "uuid": None,
-        "name": "test-file",
+        "name": "test.txt",
         "content": randbytes(1024),
     },
 }
@@ -76,7 +76,7 @@ def test_rename_success():
     assert create_file_response.error is False
 
     # Rename the file
-    new_name = "renamed-test-file"
+    new_name = "renamed.txt"
     response = app.test_client().patch(
         f"/file/{create_file_response.fileUUID}/rename",
         json={"newName": new_name},
