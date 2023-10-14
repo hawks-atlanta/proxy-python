@@ -2,6 +2,7 @@ import flask
 from src.middlewares import auth_middlewares
 from src.controllers.files import FILES_HANDLERS
 
+
 views = flask.Blueprint("file", __name__)
 
 
@@ -21,3 +22,9 @@ def file_rename(token, file_uuid):
 @auth_middlewares.token_required
 def dir_create(token):
     return FILES_HANDLERS["CREATE_DIRECTORY"](token)
+
+
+@views.route("/file/upload", methods=["POST"])
+@auth_middlewares.token_required
+def file_upload(token):
+    return FILES_HANDLERS["UPLOAD"](token)
