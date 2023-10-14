@@ -40,9 +40,6 @@ def upload_file_handler(token):
         fileId = result.fileUUID
         return {"msg": "The file is being uploaded", "fileUUID": fileId}, 201
 
-    except ValueError:
-        return {"msg": "Invalid JSON data provided in the request"}, 400
-
     except Exception as e:
         print("[Exception] file_download_handler ->", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
