@@ -1,3 +1,12 @@
+# [0.8.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.7.0...v0.8.0) (2023-10-14)
+
+
+### Features
+
+* file upload ([#53](https://github.com/hawks-atlanta/proxy-python/issues/53)) ([097d026](https://github.com/hawks-atlanta/proxy-python/commit/097d0267b4596ee8cea5f24e4b4ceaf019ff801d))
+
+
+
 # [0.7.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.6.0...v0.7.0) (2023-10-14)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * Endpoint to get the file status ([#49](https://github.com/hawks-atlanta/proxy-python/issues/49)) ([af95070](https://github.com/hawks-atlanta/proxy-python/commit/af9507083f7b2b5a833cb0ac50c865806778ca5d))
-
-
-
-# [0.1.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.0.11...v0.1.0) (2023-10-12)
-
-
-### Features
-
-* update docs openapi ([#41](https://github.com/hawks-atlanta/proxy-python/issues/41)) ([9dc6959](https://github.com/hawks-atlanta/proxy-python/commit/9dc695992b954c02ef84600b2df4d8d89e39d489))
 
 
 
