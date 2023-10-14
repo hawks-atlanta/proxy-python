@@ -39,7 +39,7 @@ def upload_file_handler(token):
             return {"msg": result["msg"]}, result["code"]
 
         fileId = result.fileUUID
-        return {"msg": "File upload successful.", "fileUUID": fileId}, 201
+        return {"msg": "The file is being uploaded", "fileUUID": fileId}, 201
 
     except ValueError:
         return {"msg": "Invalid JSON data provided in the request"}, 400
