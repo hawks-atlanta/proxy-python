@@ -1,24 +1,20 @@
+import json
 from flask import request
 from src.config.soap_client import soap_client
 
 
-def upload_file_handler():
+def upload_file_handler(token):
     try:
-        # Get JSON data from the request
-        data = request.json
-
-        if not data:
-            return {"msg": "No JSON data provided in the request"}, 400
-
+        data = json.loads(request.data)
         file = data.get("file")
         fileName = data.get("fileName")
         location = data.get("location")
 
-        if not fileName or not location or not file:
-            return {"msg": "Failed field validation."}, 400
+        if not file or not fileName or not location or not token:
+            return {"msg": "Required fields are missing in JSON data"}, 400
 
         result = soap_client.service.file_upload(
-            {"file": file, "location": location, "fileName": fileName}
+            {"fileName": fileName, "fileContent": file, "location": location, "token": token}
         )
 
         if result.fileUUID is not None:
