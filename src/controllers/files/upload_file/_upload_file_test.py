@@ -10,7 +10,7 @@ upload_file_test_data = {
     "username": fake_username(),
     "password": fake_password(),
     "file": {
-        "name": "picture",
+        "name": "picture.jpeg",
         "content": randbytes(1024),
     },
 }
@@ -37,7 +37,7 @@ def test_file_upload_successful() -> None:
     token = login_response.auth.token
 
     # Write random file to disk
-    with open(f"./{upload_file_test_data['file']['name']}.jpeg", "wb") as rf:
+    with open(f"./{upload_file_test_data['file']['name']}", "wb") as rf:
         rf.write(upload_file_test_data["file"]["content"])
 
     # Upload file
@@ -45,7 +45,7 @@ def test_file_upload_successful() -> None:
         "/file/upload",
         headers={"Authorization": f"Bearer {token}"},
         data={
-            "file": (open(f"./{upload_file_test_data['file']['name']}.jpeg", "rb")),
+            "file": (open(f"./{upload_file_test_data['file']['name']}", "rb")),
             "location": "",
         },
     )
@@ -56,4 +56,4 @@ def test_file_upload_successful() -> None:
     assert json_response["fileUUID"] is not None
 
     # Delete file from disk
-    os.remove(f"./{upload_file_test_data['file']['name']}.jpeg")
+    os.remove(f"./{upload_file_test_data['file']['name']}")
