@@ -2,6 +2,7 @@ import json
 from main import app
 from src.lib.faker import fake_username, fake_password
 
+
 register_test_data = {"username": fake_username(), "password": fake_password()}
 
 
@@ -20,11 +21,11 @@ def test_account_register_successful() -> None:
 
 def test_account_register_missing_fields() -> None:
     # Empty json
-    data = {}
-    response = app.test_client().post("/account/register", json=data)
-
+    response = app.test_client().post("/account/register")
     assert response.status_code == 400
-    assert json.loads(response.data)["msg"] == "No JSON data provided in the request"
+    assert (
+        json.loads(response.data)["msg"] == "Invalid JSON data provided in the request"
+    )
 
     # Missing password
     data = {"username": register_test_data["username"]}

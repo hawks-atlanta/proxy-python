@@ -1,60 +1,45 @@
-# Changelog
-
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
-
-### 0.0.11 (2023-10-11)
-
-### 0.0.10 (2023-10-11)
+## [0.8.1](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.0...v0.8.1) (2023-10-14)
 
 
 ### Bug Fixes
 
-* Enable all CORS origins ([#44](https://github.com/hawks-atlanta/proxy-python/issues/44)) ([9f8ad6a](https://github.com/hawks-atlanta/proxy-python/commit/9f8ad6ae4dee09b18bd7e1f44d36f0c0ee7f4ced))
-
-### 0.0.9 (2023-10-09)
+* **files:** Keep files extension ([#56](https://github.com/hawks-atlanta/proxy-python/issues/56)) ([624cc06](https://github.com/hawks-atlanta/proxy-python/commit/624cc06af6443602bc9b946c8fc7ee5376dbea2c))
 
 
-### Features
 
-* Register endpoint ([#39](https://github.com/hawks-atlanta/proxy-python/issues/39)) ([38392d4](https://github.com/hawks-atlanta/proxy-python/commit/38392d476c718eacc7e70e0bed98de08f2f1d186))
-
-### 0.0.8 (2023-10-09)
-
-### 0.0.7 (2023-10-09)
-
-### 0.0.6 (2023-10-08)
+# [0.8.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.7.0...v0.8.0) (2023-10-14)
 
 
 ### Features
 
-* endpoint challenge ([#33](https://github.com/hawks-atlanta/proxy-python/issues/33)) ([ee78fb6](https://github.com/hawks-atlanta/proxy-python/commit/ee78fb6864d0f6616464439c5c177884e514cf29))
-
-### 0.0.5 (2023-10-04)
+* file upload ([#53](https://github.com/hawks-atlanta/proxy-python/issues/53)) ([097d026](https://github.com/hawks-atlanta/proxy-python/commit/097d0267b4596ee8cea5f24e4b4ceaf019ff801d))
 
 
-### Features
 
-* endpoint login ([#15](https://github.com/hawks-atlanta/proxy-python/issues/15)) ([4921ca1](https://github.com/hawks-atlanta/proxy-python/commit/4921ca11b886d950d7811f67ac573b7a9adc6831))
-
-### 0.0.4 (2023-08-24)
-
-### 0.0.3 (2023-08-24)
-
-
-### Bug Fixes
-
-* coverage pipeline correct xml format ([#7](https://github.com/hawks-atlanta/proxy-python/issues/7)) ([1002efa](https://github.com/hawks-atlanta/proxy-python/commit/1002efa3c86bcdc2e7954f8f9394780ac5f41198))
-
-### 0.0.2 (2023-08-23)
-
-### 0.0.1 (2023-08-23)
+# [0.7.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.6.0...v0.7.0) (2023-10-14)
 
 
 ### Features
 
-* docker-compose ([6e44d01](https://github.com/hawks-atlanta/frontend-python/commit/6e44d01abede6ace6b488c6131bc96bd3b884c6d))
+* create a folder ([#52](https://github.com/hawks-atlanta/proxy-python/issues/52)) ([7aca7f2](https://github.com/hawks-atlanta/proxy-python/commit/7aca7f204ce10c37154bcf1ed716cd13ca02c142))
 
 
-### Bug Fixes
 
-* base flask repository ([3f8ea73](https://github.com/hawks-atlanta/frontend-python/commit/3f8ea739fc267bc3bf6dc15c4cf540c511fe9419))
+# [0.6.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.5.0...v0.6.0) (2023-10-13)
+
+
+### Features
+
+* Update password ([#51](https://github.com/hawks-atlanta/proxy-python/issues/51)) ([395b44b](https://github.com/hawks-atlanta/proxy-python/commit/395b44bf9223cf1126521f80ac0ae1796d2207de))
+
+
+
+# [0.5.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.4.0...v0.5.0) (2023-10-13)
+
+
+### Features
+
+* Endpoint to rename a file ([#50](https://github.com/hawks-atlanta/proxy-python/issues/50)) ([b1e93fc](https://github.com/hawks-atlanta/proxy-python/commit/b1e93fc468187e15341161c3db1084559b64e93c))
+
+
+
