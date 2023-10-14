@@ -14,7 +14,12 @@ def upload_file_handler(token):
             return {"msg": "Required fields are missing in JSON data"}, 400
 
         result = soap_client.service.file_upload(
-            {"fileName": fileName, "fileContent": file, "location": location, "token": token}
+            {
+                "fileName": fileName,
+                "fileContent": file,
+                "location": location,
+                "token": token,
+            }
         )
 
         if result.fileUUID is not None:
@@ -24,5 +29,5 @@ def upload_file_handler(token):
         return {"msg": "Bad request. File is too large."}, 413
 
     except Exception as e:
-        print("[Exception] register_handler ->", str(e))
+        print("[Exception] upload_file_handler ->", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
