@@ -1,3 +1,12 @@
+## [0.8.1](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.0...v0.8.1) (2023-10-14)
+
+
+### Bug Fixes
+
+* **files:** Keep files extension ([#56](https://github.com/hawks-atlanta/proxy-python/issues/56)) ([624cc06](https://github.com/hawks-atlanta/proxy-python/commit/624cc06af6443602bc9b946c8fc7ee5376dbea2c))
+
+
+
 # [0.8.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.7.0...v0.8.0) (2023-10-14)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * Endpoint to rename a file ([#50](https://github.com/hawks-atlanta/proxy-python/issues/50)) ([b1e93fc](https://github.com/hawks-atlanta/proxy-python/commit/b1e93fc468187e15341161c3db1084559b64e93c))
-
-
-
-# [0.4.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.1.0...v0.4.0) (2023-10-12)
-
-
-### Features
-
-* Endpoint to get the file status ([#49](https://github.com/hawks-atlanta/proxy-python/issues/49)) ([af95070](https://github.com/hawks-atlanta/proxy-python/commit/af9507083f7b2b5a833cb0ac50c865806778ca5d))
 
 
 
