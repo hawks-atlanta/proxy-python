@@ -56,7 +56,7 @@ def test_file_upload_bad_request() -> None:
         "/file/upload",
         headers={"Authorization": f"Bearer {token}"},
         data={
-            "file": (open(f"./{upload_file_test_data['file']['name']}.jpeg", "rb")),
+            "file": (open(f"./{upload_file_test_data['file']['name']}", "rb")),
             "location": "not-valid-uuid",
         },
     )
@@ -109,7 +109,7 @@ def test_file_upload_conflict() -> None:
         "/file/upload",
         headers={"Authorization": f"Bearer {token}"},
         data={
-            "file": (open(f"./{upload_file_test_data['file']['name']}.jpeg", "rb")),
+            "file": (open(f"./{upload_file_test_data['file']['name']}", "rb")),
             "location": "",
         },
     )
