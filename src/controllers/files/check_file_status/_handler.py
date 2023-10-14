@@ -1,4 +1,3 @@
-from flask import request
 from src.config.soap_client import soap_client
 
 
