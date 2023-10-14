@@ -22,12 +22,15 @@ def upload_file_handler(token):
             }
         )
 
-        if result.fileUUID is not None:
+        if result.fileUUID is None:
+            return {"msg": result["msg"]}, result["code"]
+        else:
             fileId = result.fileUUID
             return {"msg": "File upload successful.", "fileUUID": fileId}, 201
 
-        return {"msg": "Bad request. File is too large."}, 413
+    except ValueError:
+        return {"msg": "Invalid JSON data provided in the request"}, 400
 
     except Exception as e:
-        print("[Exception] upload_file_handler ->", str(e))
+        print("[Exception] file_download_handler ->", str(e))
         return {"msg": "Internal error", "error": str(e)}, 500
