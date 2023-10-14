@@ -1,32 +1,45 @@
-import json
 from flask import request
+import os
+from werkzeug.utils import secure_filename
 from src.config.soap_client import soap_client
+from src.lib.helpers import is_valid_uuid
 
 
 def upload_file_handler(token):
     try:
-        data = json.loads(request.data)
-        file = data.get("file")
-        fileName = data.get("fileName")
-        location = data.get("location")
+        if "file" not in request.files or "location" not in request.form:
+            return {"msg": "Required fields are missing in form data"}, 400
 
-        if not file or not fileName or not location or not token:
-            return {"msg": "Required fields are missing in JSON data"}, 400
+        # Get file from request
+        file = request.files["file"]
 
+        # Set null if file location is am empty string
+        fileLocation = request.form["location"]
+        fileLocation = None if fileLocation == "" else fileLocation
+
+        # Check if fileLocation is a valid UUID
+        not_valid_location = fileLocation is not None and not is_valid_uuid(
+            fileLocation
+        )
+        if not_valid_location:
+            return {"msg": "Not valid file location provided"}, 400
+
+        # Separate file name from extension
+        fileName = os.path.splitext(secure_filename(file.filename))[0]
         result = soap_client.service.file_upload(
             {
                 "fileName": fileName,
-                "fileContent": file,
-                "location": location,
+                "fileContent": file.read(),
+                "location": fileLocation,
                 "token": token,
             }
         )
 
         if result.fileUUID is None:
             return {"msg": result["msg"]}, result["code"]
-        else:
-            fileId = result.fileUUID
-            return {"msg": "File upload successful.", "fileUUID": fileId}, 201
+
+        fileId = result.fileUUID
+        return {"msg": "File upload successful.", "fileUUID": fileId}, 201
 
     except ValueError:
         return {"msg": "Invalid JSON data provided in the request"}, 400
