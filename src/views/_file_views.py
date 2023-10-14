@@ -1,7 +1,6 @@
 import flask
 from src.middlewares import auth_middlewares
-from src.controllers import _file_controllers
-
+from src.controllers.files import FILES_HANDLERS
 
 views = flask.Blueprint("file", __name__)
 
@@ -9,10 +8,16 @@ views = flask.Blueprint("file", __name__)
 @views.route("/file/<string:file_uuid>/status", methods=["GET"])
 @auth_middlewares.token_required
 def file_check(token, file_uuid):
-    return _file_controllers.check_state_handler(token, file_uuid)
+    return FILES_HANDLERS["CHECK_STATE"](token, file_uuid)
 
 
 @views.route("/file/<string:file_uuid>/rename", methods=["PATCH"])
 @auth_middlewares.token_required
 def file_rename(token, file_uuid):
-    return _file_controllers.rename_handler(token, file_uuid)
+    return FILES_HANDLERS["RENAME"](token, file_uuid)
+
+
+@views.route("/folders", methods=["POST"])
+@auth_middlewares.token_required
+def dir_create(token):
+    return FILES_HANDLERS["CREATE_DIRECTORY"](token)
