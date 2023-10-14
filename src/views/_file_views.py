@@ -16,3 +16,9 @@ def file_check(token, file_uuid):
 @auth_middlewares.token_required
 def file_rename(token, file_uuid):
     return _file_controllers.rename_handler(token, file_uuid)
+
+
+@views.route("/folders", methods=["POST"])
+@auth_middlewares.token_required
+def dir_create(token):
+    return _file_controllers.create_new_dir_handler(token)
