@@ -14,5 +14,5 @@ def challenge_handler(token):
             return {"msg": response.msg}, response.code
 
     except Exception as e:
-        print("[Exception] challenge ->", str(e))
+        print("[Exception] challenge ->", e)
         return {"msg": "There was an error validating or refreshing the session"}, 500

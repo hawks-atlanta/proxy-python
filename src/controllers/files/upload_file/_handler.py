@@ -41,5 +41,5 @@ def upload_file_handler(token):
         return {"msg": "The file is being uploaded", "fileUUID": fileId}, 201
 
     except Exception as e:
-        print("[Exception] file_download_handler ->", str(e))
-        return {"msg": "Internal error", "error": str(e)}, 500
+        print("[Exception] file_download_handler ->", e)
+        return {"msg": "Internal error"}, 500

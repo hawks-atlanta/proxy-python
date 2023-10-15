@@ -21,5 +21,5 @@ def check_state_handler(token, file_uuid):
             "ready": response.ready,
         }, response.code
     except Exception as e:
-        print("[Exception] check_state_handler ->", str(e))
+        print("[Exception] check_state_handler ->", e)
         return {"msg": "There was an error checking the file state"}, 500
