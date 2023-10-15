@@ -319,6 +319,34 @@ paths:
                 $ref: "#/components/schemas/statusResponse"
 
   /file/{fileUUID}:
+    get: 
+      tags: 
+        - Files
+      security:
+        - bearer: []
+      description: Get a file by its UUID
+      parameters:
+        - in: path
+          name: fileUUID
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to get
+      responses: 
+        "200": 
+          description: File successfully obtained
+          content: 
+            aplication/json: 
+              schema: 
+               type: object
+               properties:
+                file: 
+                  type: object
+                  allOf:
+                    - $ref: "#/components/schemas/fileDetails"
+                msg: 
+                  type: string
+                  example: "The file have been obtained successfully"
     delete:
       tags:
         - Files
@@ -657,6 +685,9 @@ components:
         name:
           type: string
           example: "pixture.png"
+        extension: 
+          type: string
+          example: "image/png"
         size:
           type: integer
           example: 4687
