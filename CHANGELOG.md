@@ -1,3 +1,12 @@
+## [0.8.2](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.1...v0.8.2) (2023-10-15)
+
+
+### Bug Fixes
+
+* Add extra validations for UUIDs ([#65](https://github.com/hawks-atlanta/proxy-python/issues/65)) ([7c41c70](https://github.com/hawks-atlanta/proxy-python/commit/7c41c70445858a3e46e162d59692605375a2ec42))
+
+
+
 ## [0.8.1](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.0...v0.8.1) (2023-10-14)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * Update password ([#51](https://github.com/hawks-atlanta/proxy-python/issues/51)) ([395b44b](https://github.com/hawks-atlanta/proxy-python/commit/395b44bf9223cf1126521f80ac0ae1796d2207de))
-
-
-
-# [0.5.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.4.0...v0.5.0) (2023-10-13)
-
-
-### Features
-
-* Endpoint to rename a file ([#50](https://github.com/hawks-atlanta/proxy-python/issues/50)) ([b1e93fc](https://github.com/hawks-atlanta/proxy-python/commit/b1e93fc468187e15341161c3db1084559b64e93c))
 
 
 
