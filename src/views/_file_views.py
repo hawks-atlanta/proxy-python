@@ -28,3 +28,9 @@ def dir_create(token):
 @auth_middlewares.token_required
 def file_upload(token):
     return FILES_HANDLERS["UPLOAD"](token)
+
+
+@views.route("/file/share", methods=["POST"])
+@auth_middlewares.token_required
+def file_share(token):
+    return FILES_HANDLERS["SHARE"](token)
