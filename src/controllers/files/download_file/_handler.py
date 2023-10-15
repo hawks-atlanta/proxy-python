@@ -1,3 +1,5 @@
+import io
+from flask import send_file
 from src.config.soap_client import soap_client
 
 
@@ -9,10 +11,18 @@ def download_file_handler(token, file_uuid):
         if response["error"] is True:
             return {"msg": response["msg"]}, response["code"]
         else:
-            return {"msg": "File downloaded successfully"}, 200
+            response_file = send_file(
+                path_or_file=io.BytesIO(response["fileContent"]),
+                as_attachment=True,
+                mimetype="application/octet-stream",
+                download_name=response["fileName"],
+            )
+
+            return response_file
 
     except ValueError:
         return {"msg": "Invalid JSON data provided in the request"}, 400
 
-    except Exception:
+    except Exception as e:
+        print("[Exception] download_file_handler ->", e)
         return {"msg": "There was an error downloading the file"}, 500
