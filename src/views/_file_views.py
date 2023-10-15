@@ -34,3 +34,15 @@ def file_upload(token):
 @auth_middlewares.token_required
 def file_list(token):
     return FILES_HANDLERS["FILE_LIST"](token)
+
+  
+@views.route("/file/download/<string:file_uuid>", methods=["GET"])
+@auth_middlewares.token_required
+def file_download(token, file_uuid):
+    return FILES_HANDLERS["DOWNLOAD_FILE"](token, file_uuid)
+
+
+@views.route("/file/share", methods=["POST"])
+@auth_middlewares.token_required
+def file_share(token):
+    return FILES_HANDLERS["SHARE"](token)

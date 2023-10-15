@@ -3,6 +3,8 @@ from .rename_file._handler import rename_handler
 from .create_directory._handler import create_new_dir_handler
 from .upload_file._handler import upload_file_handler
 from .list_files._handler import list_files_handler
+from .download_file._handler import download_file_handler
+from .share_file._handler import share_handler
 
 FILES_HANDLERS = {
     "CHECK_STATE": check_state_handler,
@@ -10,4 +12,6 @@ FILES_HANDLERS = {
     "CREATE_DIRECTORY": create_new_dir_handler,
     "UPLOAD": upload_file_handler,
     "FILE_LIST": list_files_handler,
+    "DOWNLOAD_FILE": download_file_handler,
+    "SHARE": share_handler,
 }
