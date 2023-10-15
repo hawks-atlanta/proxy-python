@@ -28,3 +28,9 @@ def dir_create(token):
 @auth_middlewares.token_required
 def file_upload(token):
     return FILES_HANDLERS["UPLOAD"](token)
+
+
+@views.route("/file/<string:file_uuid>", methods=["GET"])
+@auth_middlewares.token_required
+def file_get(token, file_uuid):
+    return FILES_HANDLERS["GET_BY_UUID"](token, file_uuid)
