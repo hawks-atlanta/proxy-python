@@ -35,7 +35,7 @@ def file_upload(token):
 def file_download(token, file_uuid):
     return FILES_HANDLERS["DOWNLOAD_FILE"](token, file_uuid)
 
-  
+
 @views.route("/file/share", methods=["POST"])
 @auth_middlewares.token_required
 def file_share(token):
