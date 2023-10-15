@@ -28,5 +28,5 @@ def login_handler():
         return {"msg": "Invalid JSON data provided in the request"}, 400
 
     except Exception as e:
-        print("[Exception] login_handler ->", str(e))
+        print("[Exception] login_handler ->", e)
         return {"msg": "There was an error logging in"}, 500

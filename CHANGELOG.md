@@ -1,3 +1,22 @@
+# [0.10.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.9.0...v0.10.0) (2023-10-15)
+
+
+### Features
+
+* list user files ([#64](https://github.com/hawks-atlanta/proxy-python/issues/64)) ([6daf51f](https://github.com/hawks-atlanta/proxy-python/commit/6daf51f7860e49bdd5d48c2878a525e14bb08c9a))
+
+
+
+# [0.9.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.2...v0.9.0) (2023-10-15)
+
+
+### Features
+
+* download file ([#60](https://github.com/hawks-atlanta/proxy-python/issues/60)) ([9bf0cdb](https://github.com/hawks-atlanta/proxy-python/commit/9bf0cdb8b7d4901fdcad1991c4a88766bf1a3bf2))
+* share a file with another user ([#61](https://github.com/hawks-atlanta/proxy-python/issues/61)) ([a6f7074](https://github.com/hawks-atlanta/proxy-python/commit/a6f7074c3e69edda8bc3c91c370b917c14cc3cc6))
+
+
+
 ## [0.8.2](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.1...v0.8.2) (2023-10-15)
 
 
@@ -22,24 +41,6 @@
 ### Features
 
 * file upload ([#53](https://github.com/hawks-atlanta/proxy-python/issues/53)) ([097d026](https://github.com/hawks-atlanta/proxy-python/commit/097d0267b4596ee8cea5f24e4b4ceaf019ff801d))
-
-
-
-# [0.7.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.6.0...v0.7.0) (2023-10-14)
-
-
-### Features
-
-* create a folder ([#52](https://github.com/hawks-atlanta/proxy-python/issues/52)) ([7aca7f2](https://github.com/hawks-atlanta/proxy-python/commit/7aca7f204ce10c37154bcf1ed716cd13ca02c142))
-
-
-
-# [0.6.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.5.0...v0.6.0) (2023-10-13)
-
-
-### Features
-
-* Update password ([#51](https://github.com/hawks-atlanta/proxy-python/issues/51)) ([395b44b](https://github.com/hawks-atlanta/proxy-python/commit/395b44bf9223cf1126521f80ac0ae1796d2207de))
 
 
 
