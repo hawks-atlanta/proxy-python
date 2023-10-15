@@ -52,6 +52,14 @@ def test_rename_bad_request():
     )
     assert response.status_code == 400
 
+    # Not valid file UUID
+    response = app.test_client().patch(
+        "/file/1234/rename",
+        json={"newName": "test.txt"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 400
+
 
 def test_rename_success():
     # Login with the user

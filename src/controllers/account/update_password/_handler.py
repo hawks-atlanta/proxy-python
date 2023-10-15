@@ -25,5 +25,5 @@ def update_password_handler(token):
         return {"msg": "Invalid JSON data provided in the request"}, 400
 
     except Exception as e:
-        print("[Exception] password_handler ->", str(e))
-        return {"msg": "Internal error", "error": str(e)}, 500
+        print("[Exception] password_handler ->", e)
+        return {"msg": "Internal error"}, 500

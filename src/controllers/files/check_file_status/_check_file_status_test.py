@@ -18,7 +18,7 @@ get_status_test_data = {
 }
 
 
-def test_get_status_not_success_code():
+def test_get_status_bad_request():
     # Register an user
     register_response = soap_client.service.account_register(
         {
@@ -28,6 +28,25 @@ def test_get_status_not_success_code():
     )
     assert register_response.error is False
 
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": get_status_test_data["username"],
+            "password": get_status_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    # Not valid file UUID (400 Bad Request)
+    response = app.test_client().get(
+        "/file/1234/status",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 400
+
+
+def test_get_status_not_success_code():
     # Login with the user
     login_response = soap_client.service.auth_login(
         {
