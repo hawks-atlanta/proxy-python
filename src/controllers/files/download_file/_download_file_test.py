@@ -1,6 +1,6 @@
 from random import randbytes
 from main import app
-import json
+from uuid import uuid4
 from src.config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
@@ -36,9 +36,9 @@ def test_download_bad_request():
     assert login_response.error is False
     token = login_response.auth.token
 
-    # No UUID
+    # Unexistent file UUID
     response = app.test_client().get(
-        "/file/download/",
+        f"/file/download/{uuid4()}",
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 404
@@ -73,12 +73,15 @@ def test_download_success():
     assert create_file_response.error is False
 
     # DOWNLOAD the file
-
-    response = app.test_client().get(
+    file_response = app.test_client().get(
         f"/file/download/{create_file_response.fileUUID}",
         headers={"Authorization": f"Bearer {token}"},
     )
+    file = file_response.data
 
-    json_response = json.loads(response.data)
-    assert response.status_code == 200
-    assert json_response["msg"] == "File downloaded successfully"
+    assert file_response.status_code == 200
+    assert (
+        file_response.headers["Content-Disposition"]
+        == f"attachment; filename={download_test_data['file']['name']}"
+    )
+    assert len(file) == len(download_test_data["file"]["content"])
