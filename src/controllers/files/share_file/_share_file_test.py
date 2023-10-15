@@ -51,5 +51,3 @@ def test_share_bad_request():
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 400
-
-
