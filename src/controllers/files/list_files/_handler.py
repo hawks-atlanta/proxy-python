@@ -1,4 +1,3 @@
-import json
 import flask
 from src.config.soap_client import soap_client
 from src.lib.helpers import is_valid_uuid
