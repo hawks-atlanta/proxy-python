@@ -37,5 +37,5 @@ def create_new_dir_handler(token):
         return {"msg": "Invalid JSON data provided in the request"}, 400
 
     except Exception as e:
-        print("[Exception] create_new_directory ->", str(e))
+        print("[Exception] create_new_directory ->", e)
         return {"msg": "There was an error creating the new directory"}, 500
