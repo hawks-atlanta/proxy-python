@@ -20,9 +20,6 @@ def download_file_handler(token, file_uuid):
 
             return response_file
 
-    except ValueError:
-        return {"msg": "Invalid JSON data provided in the request"}, 400
-
     except Exception as e:
         print("[Exception] download_file_handler ->", e)
         return {"msg": "There was an error downloading the file"}, 500
