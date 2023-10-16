@@ -1,7 +1,8 @@
 import json
 from random import randbytes
-from main import app
+from uuid import uuid4
 
+from main import app
 from src.config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
@@ -49,7 +50,6 @@ def test_move_file_success():
     )
     assert create_dir_response["code"] == 201
     directory_uuid = create_dir_response["fileUUID"]
-
     move_file_test_data["file"]["targetDirectoryUUID"] = directory_uuid
 
     # Upload a file
@@ -62,10 +62,11 @@ def test_move_file_success():
         }
     )
     assert create_file_response.error is False
+    move_file_test_data["file"]["uuid"] = create_file_response.fileUUID
 
     # Move the file to the target directory
     response = app.test_client().patch(
-        f"/file/{create_file_response.fileUUID}/move",
+        f"/file/{move_file_test_data['file']['uuid']}/move",
         json={"targetDirectoryUUID": directory_uuid},
         headers={"Authorization": f"Bearer {token}"},
     )
@@ -90,25 +91,24 @@ def test_move_file_bad_request():
     response = app.test_client().patch(
         f"/file/{move_file_test_data['file']['uuid']}/move",
         headers={"Authorization": f"Bearer {token}"},
-        json={},
     )
     assert response.status_code == 400
 
-    # Empty targetDirectoryUUID
+    # Not valid target directory UUID
     response = app.test_client().patch(
         f"/file/{move_file_test_data['file']['uuid']}/move",
-        json={"targetDirectoryUUID": ""},
+        json={"targetDirectoryUUID": "not_valid_uuid"},
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 400
 
     # Non existent file UUID
     response = app.test_client().patch(
-        "/file/1234/move",
-        json={"targetDirectoryUUID": "some_directory_uuid"},
+        f"/file/{uuid4()}/move",
+        json={"targetDirectoryUUID": uuid4()},
         headers={"Authorization": f"Bearer {token}"},
     )
-    assert response.status_code == 400
+    assert response.status_code == 404
 
 
 def test_move_file_conflict():
@@ -122,34 +122,12 @@ def test_move_file_conflict():
     assert login_response.error is False
     token = login_response.auth.token
 
-    # Create a new directory
-    new_directory_name = "test_directory"
-    create_dir_response = soap_client.service.file_new_dir(
-        {
-            "directoryName": new_directory_name,
-            "location": None,
-            "token": token,
-        }
-    )
-    assert create_dir_response["code"] == 409
-    directory_uuid = create_dir_response["fileUUID"]
-
-    move_file_test_data["file"]["targetDirectoryUUID"] = directory_uuid
-
-    # Upload a file
-    create_file_response = soap_client.service.file_upload(
-        {
-            "token": token,
-            "fileName": move_file_test_data["file"]["name"],
-            "fileContent": move_file_test_data["file"]["content"],
-            "location": None,
-        }
-    )
-    assert create_file_response.error is False
-
+    # Try to move the file to the same directory
     response = app.test_client().patch(
-        f"/file/{create_file_response.fileUUID}/move",
-        json={"targetDirectoryUUID": directory_uuid},
+        f"/file/{move_file_test_data['file']['uuid']}/move",
+        json={
+            "targetDirectoryUUID": move_file_test_data["file"]["targetDirectoryUUID"]
+        },
         headers={"Authorization": f"Bearer {token}"},
     )
-    assert response.status_code == 400
+    assert response.status_code == 409
