@@ -1,16 +1,19 @@
-from src.config.soap_client import soap_client
+import json
 from flask import request
+from src.config.soap_client import soap_client
+from src.lib.helpers import is_valid_uuid
 
 
 def file_move_handler(token, file_uuid):
     try:
-        data = request.get_json()
+        data = json.loads(request.data)
         target_directory_uuid = data.get("targetDirectoryUUID")
 
-        if not target_directory_uuid:
-            return {
-                "msg": "Required field 'targetDirectoryUUID' is missing in JSON data"
-            }, 400
+        not_valid_target_directory = not target_directory_uuid or not is_valid_uuid(
+            target_directory_uuid
+        )
+        if not_valid_target_directory:
+            return {"msg": "The target directory is not valid or was not provided"}, 400
 
         request_data = {
             "token": token,
@@ -24,6 +27,9 @@ def file_move_handler(token, file_uuid):
             return {"msg": response["msg"]}, response["code"]
         else:
             return {"msg": "The file has been moved"}, 200
+
+    except ValueError:
+        return {"msg": "Not valid JSON data provided in the request"}, 400
 
     except Exception as e:
         print("[Exception] file_move_handler ->", e)
