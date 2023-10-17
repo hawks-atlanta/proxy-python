@@ -64,4 +64,3 @@ def move_file(token, file_uuid):
 @auth_middlewares.token_required
 def remove_file(token, file_uuid):
     return FILES_HANDLERS["DELETE_FILE"](token, file_uuid)
-
