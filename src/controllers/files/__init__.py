@@ -7,7 +7,6 @@ from .list_files._handler import list_files_handler
 from .download_file._handler import download_file_handler
 from .share_file._handler import share_handler
 from .move_a_file._handler import file_move_handler
-from .remove_file._handler import remove_file_handler
 
 FILES_HANDLERS = {
     "CHECK_STATE": check_state_handler,
