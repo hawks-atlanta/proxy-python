@@ -1,5 +1,6 @@
 from src.config.soap_client import soap_client
 
+
 def shared_files_handler(token):
     try:
         request_data = {"token": token}
