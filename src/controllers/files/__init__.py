@@ -19,5 +19,4 @@ FILES_HANDLERS = {
     "DOWNLOAD_FILE": download_file_handler,
     "SHARE": share_handler,
     "MOVE_FILE": file_move_handler,
-    "DELETE_FILE": remove_file_handler,
 }
