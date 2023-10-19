@@ -1,24 +1,13 @@
-import json
-from flask import request
 from src.config.soap_client import soap_client
 from src.lib.helpers import is_valid_uuid
 
 
-def shared_with_who_handler(token):
+def shared_with_who_handler(token, file_uuid):
     try:
-        data = json.loads(request.data)
-        fileUUID = data["fileUUID"]
-
-        # Check if required fields are empty
-        empty_file_uuid = not fileUUID or len(fileUUID) == 0
-        if empty_file_uuid or not token:
-            return {"msg": "Required fields are missing in form data"}, 400
-
-        # Check if file UUID is valid
-        if not is_valid_uuid(fileUUID):
+        if not is_valid_uuid(file_uuid):
             return {"msg": "Not valid file UUID provided"}, 400
 
-        request_data = {"fileUUID": fileUUID, "token": token}
+        request_data = {"fileUUID": file_uuid, "token": token}
         response = soap_client.service.share_list_with_who(request_data)
 
         if response.usernames is None:
