@@ -9,19 +9,20 @@ def shared_files_handler(token):
         if response["error"] is True:
             return {"msg": response["msg"]}, response["code"]
 
-        sharedFile = [
+        files = [
             {
                 "name": file.name,
                 "size": file.size,
                 "isFile": file.isFile,
+                "extension": file.extension,
                 "uuid": file.uuid,
                 "ownerusername": file.ownerusername,
             }
-            for file in response.sharedFile
+            for file in response.files
         ]
 
         return {
-            "sharedFile": sharedFile,
+            "files": files,
             "msg": "List of shared files obtained",
         }, 200
     except Exception as e:
