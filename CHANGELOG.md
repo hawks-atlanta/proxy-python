@@ -1,3 +1,12 @@
+# [0.12.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.11.0...v0.12.0) (2023-10-20)
+
+
+### Features
+
+* move a file ([#68](https://github.com/hawks-atlanta/proxy-python/issues/68)) ([b0a585c](https://github.com/hawks-atlanta/proxy-python/commit/b0a585c89c8ae09a49fa0549858d73f51ea6976a))
+
+
+
 # [0.11.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.10.0...v0.11.0) (2023-10-15)
 
 
@@ -32,15 +41,6 @@
 ### Bug Fixes
 
 * Add extra validations for UUIDs ([#65](https://github.com/hawks-atlanta/proxy-python/issues/65)) ([7c41c70](https://github.com/hawks-atlanta/proxy-python/commit/7c41c70445858a3e46e162d59692605375a2ec42))
-
-
-
-## [0.8.1](https://github.com/hawks-atlanta/proxy-python/compare/v0.8.0...v0.8.1) (2023-10-14)
-
-
-### Bug Fixes
-
-* **files:** Keep files extension ([#56](https://github.com/hawks-atlanta/proxy-python/issues/56)) ([624cc06](https://github.com/hawks-atlanta/proxy-python/commit/624cc06af6443602bc9b946c8fc7ee5376dbea2c))
 
 
 
