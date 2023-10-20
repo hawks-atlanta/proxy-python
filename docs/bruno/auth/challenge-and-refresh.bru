@@ -1,0 +1,15 @@
+meta {
+  name: challenge-and-refresh
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_BASE_URL}}/auth/refresh
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}

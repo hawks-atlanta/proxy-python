@@ -1,0 +1,15 @@
+meta {
+  name: list-files-in-root
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{API_BASE_URL}}/file/list
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}

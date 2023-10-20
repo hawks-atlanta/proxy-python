@@ -1,0 +1,22 @@
+meta {
+  name: create-folder-in-root
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_BASE_URL}}/folders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:json {
+  {
+    "directoryName": "university", 
+    "location": null
+  }
+}

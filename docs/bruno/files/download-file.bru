@@ -1,0 +1,15 @@
+meta {
+  name: download-file
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{API_BASE_URL}}/file/download/ac682ad3-e525-49af-a257-2697c80fe15a
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}

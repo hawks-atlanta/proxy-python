@@ -1,0 +1,19 @@
+meta {
+  name: list-files-in-folder
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{API_BASE_URL}}/file/list?directoryUUID=25d8cec5-f2d4-4b9e-90b9-06c7093bf027
+  body: none
+  auth: bearer
+}
+
+query {
+  directoryUUID: 25d8cec5-f2d4-4b9e-90b9-06c7093bf027
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}

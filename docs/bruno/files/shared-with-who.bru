@@ -1,0 +1,15 @@
+meta {
+  name: shared-with-who
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{API_BASE_URL}}/file/ac682ad3-e525-49af-a257-2697c80fe15a/shared-with-who
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
