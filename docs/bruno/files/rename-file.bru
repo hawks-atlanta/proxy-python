@@ -1,0 +1,17 @@
+meta {
+  name: rename-file
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{API_BASE_URL}}/file/ac682ad3-e525-49af-a257-2697c80fe15a/rename
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "newName": "renamed"
+  }
+}
