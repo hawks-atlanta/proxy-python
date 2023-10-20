@@ -51,6 +51,7 @@ def test_shared_with_who_bad_request():
     )
     assert response.status_code == 401
 
+
 def test_shared_with_who_success():
     # Register the second user
     register_response2 = soap_client.service.account_register(
@@ -103,6 +104,7 @@ def test_shared_with_who_success():
     assert file_response.status_code == 200
     assert len(json_response["users"]) == 1
     assert json_response["users"][0] == shared_with_who_test_data["otherUsername"]
+
 
 def test_shared_with_who_not_found():
     # Login with the user

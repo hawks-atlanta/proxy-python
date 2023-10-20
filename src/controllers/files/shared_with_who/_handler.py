@@ -13,10 +13,7 @@ def shared_with_who_handler(token, file_uuid):
         if response.error is True:
             return {"msg": response["msg"]}, response["code"]
 
-        usernames = [
-            username
-            for username in response.usernames
-        ]
+        usernames = [username for username in response.usernames]
 
         return {
             "users": usernames,
@@ -24,4 +21,6 @@ def shared_with_who_handler(token, file_uuid):
         }, 200
     except Exception as e:
         print("[Exception] shared_with_who_handler ->", e)
-        return {"msg": "There was an error listing the users that have access to this file"}, 500
+        return {
+            "msg": "There was an error listing the users that have access to this file"
+        }, 500
