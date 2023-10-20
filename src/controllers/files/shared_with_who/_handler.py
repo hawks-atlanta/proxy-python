@@ -10,20 +10,17 @@ def shared_with_who_handler(token, file_uuid):
         request_data = {"fileUUID": file_uuid, "token": token}
         response = soap_client.service.share_list_with_who(request_data)
 
-        if response.usernames is None:
+        if response.error is True:
             return {"msg": response["msg"]}, response["code"]
 
-        usernames = [
-            {
-                "users": usernames,
-            }
-            for usernames in response.usernames
-        ]
+        usernames = [username for username in response.usernames]
 
         return {
             "users": usernames,
-            "msg": "List of users the file is shared with",
+            "msg": "The users that have access to this file were listed successfully",
         }, 200
     except Exception as e:
         print("[Exception] shared_with_who_handler ->", e)
-        return {"msg": "There was an error listing the shared with"}, 500
+        return {
+            "msg": "There was an error listing the users that have access to this file"
+        }, 500
