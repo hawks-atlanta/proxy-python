@@ -1,4 +1,5 @@
 from random import randbytes
+from uuid import uuid4
 from main import app
 from src.config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
@@ -50,7 +51,6 @@ def test_shared_with_who_bad_request():
     )
     assert response.status_code == 401
 
-
 def test_shared_with_who_success():
     # Register the second user
     register_response2 = soap_client.service.account_register(
@@ -98,4 +98,26 @@ def test_shared_with_who_success():
         f"/file/{shared_with_who_test_data['file']['uuid']}/shared-with-who",
         headers={"Authorization": f"Bearer {token}"},
     )
+    json_response = file_response.get_json()
+
     assert file_response.status_code == 200
+    assert len(json_response["users"]) == 1
+    assert json_response["users"][0] == shared_with_who_test_data["otherUsername"]
+
+def test_shared_with_who_not_found():
+    # Login with the user
+    login_response = soap_client.service.auth_login(
+        {
+            "username": shared_with_who_test_data["username"],
+            "password": shared_with_who_test_data["password"],
+        }
+    )
+    assert login_response.error is False
+    token = login_response.auth.token
+
+    # Unexistent file UUID
+    response = app.test_client().get(
+        f"/file/{uuid4()}/shared-with-who",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 404
