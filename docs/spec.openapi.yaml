@@ -495,7 +495,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/statusResponse"
 
-  /file/shared-with-who:
+  /file/{fileUUID}/shared-with-who:
     get:
       tags:
         - Files

@@ -52,3 +52,9 @@ def file_download(token, file_uuid):
 @auth_middlewares.token_required
 def file_share(token):
     return FILES_HANDLERS["SHARE"](token)
+
+
+@views.route("/file/<string:file_uuid>/move", methods=["PATCH"])
+@auth_middlewares.token_required
+def move_file(token, file_uuid):
+    return FILES_HANDLERS["MOVE_FILE"](token, file_uuid)
