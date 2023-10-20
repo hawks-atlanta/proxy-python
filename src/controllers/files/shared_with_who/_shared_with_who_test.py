@@ -1,6 +1,5 @@
 from random import randbytes
 from main import app
-from uuid import uuid4
 from src.config.soap_client import soap_client
 from src.lib.faker import fake_username, fake_password
 
