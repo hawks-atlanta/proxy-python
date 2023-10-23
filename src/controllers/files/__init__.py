@@ -8,6 +8,7 @@ from .download_file._handler import download_file_handler
 from .share_file._handler import share_handler
 from .move_a_file._handler import file_move_handler
 from .shared_with_who._handler import shared_with_who_handler
+from .shared_file._handler import shared_files_handler
 
 FILES_HANDLERS = {
     "CHECK_STATE": check_state_handler,
@@ -20,4 +21,5 @@ FILES_HANDLERS = {
     "SHARE": share_handler,
     "MOVE_FILE": file_move_handler,
     "SHARED_WITH_WHO": shared_with_who_handler,
+    "SHARED_FILES": shared_files_handler
 }
