@@ -1,0 +1,20 @@
+meta {
+  name: upload-file-in-folder
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{API_BASE_URL}}/file/upload
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:multipart-form {
+  file: 
+  location: f693e54f-d285-47e3-833c-fd0943e2e3da
+}

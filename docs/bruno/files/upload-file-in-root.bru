@@ -1,0 +1,20 @@
+meta {
+  name: upload-file-in-root
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{API_BASE_URL}}/file/upload
+  body: multipartForm
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:multipart-form {
+  file: 
+  location: 
+}

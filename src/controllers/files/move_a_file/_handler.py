@@ -9,11 +9,9 @@ def file_move_handler(token, file_uuid):
         data = json.loads(request.data)
         target_directory_uuid = data.get("targetDirectoryUUID")
 
-        not_valid_target_directory = not target_directory_uuid or not is_valid_uuid(
-            target_directory_uuid
-        )
-        if not_valid_target_directory:
-            return {"msg": "The target directory is not valid or was not provided"}, 400
+        if target_directory_uuid is not None:
+            if not is_valid_uuid(target_directory_uuid):
+                return {"msg": "The target directory is not a valid UUID"}, 400
 
         request_data = {
             "token": token,
