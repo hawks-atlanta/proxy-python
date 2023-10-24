@@ -1,0 +1,15 @@
+meta {
+  name: get-shared-with-me
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{API_BASE_URL}}/file/shared
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}

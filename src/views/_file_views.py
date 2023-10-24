@@ -64,3 +64,9 @@ def move_file(token, file_uuid):
 @auth_middlewares.token_required
 def shared_with_who(token, file_uuid):
     return FILES_HANDLERS["SHARED_WITH_WHO"](token, file_uuid)
+
+
+@views.route("/file/shared", methods=["GET"])
+@auth_middlewares.token_required
+def shared_files(token):
+    return FILES_HANDLERS["SHARED_FILES"](token)
