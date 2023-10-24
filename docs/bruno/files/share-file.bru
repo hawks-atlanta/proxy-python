@@ -1,0 +1,22 @@
+meta {
+  name: share-file
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{API_BASE_URL}}/file/share
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:json {
+  {
+    "fileUUID": "ac682ad3-e525-49af-a257-2697c80fe15a",
+    "otherUsername": "miguel"
+  }
+}

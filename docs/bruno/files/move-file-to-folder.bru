@@ -1,0 +1,17 @@
+meta {
+  name: move-file-to-folder
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{API_BASE_URL}}/file/ac682ad3-e525-49af-a257-2697c80fe15a/move
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "targetDirectoryUUID": "25d8cec5-f2d4-4b9e-90b9-06c7093bf027",
+  }
+}
