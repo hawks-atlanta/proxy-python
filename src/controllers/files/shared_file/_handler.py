@@ -11,14 +11,13 @@ def shared_files_handler(token):
 
         files = [
             {
-                "name": file.name,
-                "size": file.size,
-                "isFile": file.isFile,
                 "extension": file.extension,
+                "name": file.name,
+                "isFile": file.isFile,
                 "uuid": file.uuid,
-                "ownerusername": file.ownerusername,
+                "size": file.size,
             }
-            for file in response.files
+            for file in response.sharedFiles
         ]
 
         return {
