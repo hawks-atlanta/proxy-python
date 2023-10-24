@@ -1,3 +1,12 @@
+# [0.14.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.13.0...v0.14.0) (2023-10-24)
+
+
+### Features
+
+* Endpoint to get the files shared with the user ([#80](https://github.com/hawks-atlanta/proxy-python/issues/80)) ([9fe3011](https://github.com/hawks-atlanta/proxy-python/commit/9fe3011c447ccc482ff1c67aec56bdd95ff5e30c))
+
+
+
 # [0.13.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.12.1...v0.13.0) (2023-10-20)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * Get file by UUID ([#66](https://github.com/hawks-atlanta/proxy-python/issues/66)) ([b292621](https://github.com/hawks-atlanta/proxy-python/commit/b2926217b2e4cc03ea59525e1f59c0f2167b6791))
-
-
-
-# [0.10.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.9.0...v0.10.0) (2023-10-15)
-
-
-### Features
-
-* list user files ([#64](https://github.com/hawks-atlanta/proxy-python/issues/64)) ([6daf51f](https://github.com/hawks-atlanta/proxy-python/commit/6daf51f7860e49bdd5d48c2878a525e14bb08c9a))
 
 
 
