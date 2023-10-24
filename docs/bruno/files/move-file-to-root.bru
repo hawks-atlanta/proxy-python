@@ -1,0 +1,17 @@
+meta {
+  name: move-file-to-root
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{API_BASE_URL}}/file/ac682ad3-e525-49af-a257-2697c80fe15a/move
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "targetDirectoryUUID": null,
+  }
+}

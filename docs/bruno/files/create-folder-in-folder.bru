@@ -1,0 +1,22 @@
+meta {
+  name: create-folder-in-folder
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{API_BASE_URL}}/folders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{AUTH_TOKEN}}
+}
+
+body:json {
+  {
+    "directoryName": "nested", 
+    "location": "25d8cec5-f2d4-4b9e-90b9-06c7093bf027"
+  }
+}
