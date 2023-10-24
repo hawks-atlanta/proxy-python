@@ -44,9 +44,7 @@ def test_remove_bad_request():
     assert response.status_code == 404
 
     # NO TOKEN
-    response = app.test_client().delete(
-        f"/file/{remove_test_data['file']['uuid']}"
-    )
+    response = app.test_client().delete(f"/file/{remove_test_data['file']['uuid']}")
     assert response.status_code == 401
 
 
@@ -76,6 +74,5 @@ def test_remove_success():
     file_response = app.test_client().delete(
         f"/file/{create_file_response.fileUUID}",
         headers={"Authorization": f"Bearer {token}"},
-    )   
+    )
     assert file_response.status_code == 200
-
