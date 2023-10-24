@@ -10,6 +10,8 @@ from .move_a_file._handler import file_move_handler
 from .shared_with_who._handler import shared_with_who_handler
 from .shared_file._handler import shared_files_handler
 
+from .unshare_file._handler import unshare_handler
+
 FILES_HANDLERS = {
     "CHECK_STATE": check_state_handler,
     "RENAME": rename_handler,
@@ -22,4 +24,6 @@ FILES_HANDLERS = {
     "MOVE_FILE": file_move_handler,
     "SHARED_WITH_WHO": shared_with_who_handler,
     "SHARED_FILES": shared_files_handler,
+
+    "UNSHARE": unshare_handler,
 }
