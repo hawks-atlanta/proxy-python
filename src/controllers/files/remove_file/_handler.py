@@ -5,7 +5,7 @@ from src.lib.helpers import is_valid_uuid
 def remove_file_handler(token, file_uuid):
     try:
         if not is_valid_uuid(file_uuid):
-            return {"msg": "Not valid file UUID provided"}, 404
+            return {"msg": "Not valid file UUID provided"}, 400
 
         request_data = {"fileUUID": file_uuid, "token": token}
         response = soap_client.service.file_delete(request_data)
