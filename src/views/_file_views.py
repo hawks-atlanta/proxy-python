@@ -70,3 +70,9 @@ def shared_with_who(token, file_uuid):
 @auth_middlewares.token_required
 def shared_files(token):
     return FILES_HANDLERS["SHARED_FILES"](token)
+
+
+@views.route("/file/<string:file_uuid>", methods=["DELETE"])
+@auth_middlewares.token_required
+def delete_files(token, file_uuid):
+    return FILES_HANDLERS["REMOVE"](token, file_uuid)
