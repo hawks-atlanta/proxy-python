@@ -21,5 +21,5 @@ FILES_HANDLERS = {
     "SHARE": share_handler,
     "MOVE_FILE": file_move_handler,
     "SHARED_WITH_WHO": shared_with_who_handler,
-    "SHARED_FILES": shared_files_handler
+    "SHARED_FILES": shared_files_handler,
 }
