@@ -1,3 +1,12 @@
+# [0.16.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.15.0...v0.16.0) (2023-10-25)
+
+
+### Features
+
+* unshare file ([#84](https://github.com/hawks-atlanta/proxy-python/issues/84)) ([a39e127](https://github.com/hawks-atlanta/proxy-python/commit/a39e127055f1a88bc3075cd476341be387c2dd2c))
+
+
+
 # [0.15.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.14.0...v0.15.0) (2023-10-24)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * move a file ([#78](https://github.com/hawks-atlanta/proxy-python/issues/78)) ([80cb0eb](https://github.com/hawks-atlanta/proxy-python/commit/80cb0eb37675d67ead3349836fae2cac0cec167f))
-
-
-
-# [0.12.0](https://github.com/hawks-atlanta/proxy-python/compare/v0.11.0...v0.12.0) (2023-10-20)
-
-
-### Features
-
-* move a file ([#68](https://github.com/hawks-atlanta/proxy-python/issues/68)) ([b0a585c](https://github.com/hawks-atlanta/proxy-python/commit/b0a585c89c8ae09a49fa0549858d73f51ea6976a))
 
 
 

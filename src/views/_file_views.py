@@ -76,3 +76,9 @@ def shared_files(token):
 @auth_middlewares.token_required
 def delete_files(token, file_uuid):
     return FILES_HANDLERS["REMOVE"](token, file_uuid)
+
+
+@views.route("/file/unshare", methods=["POST"])
+@auth_middlewares.token_required
+def unshare_files(token):
+    return FILES_HANDLERS["UNSHARE"](token)
