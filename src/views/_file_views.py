@@ -82,4 +82,3 @@ def delete_files(token, file_uuid):
 @auth_middlewares.token_required
 def unshare_files(token):
     return FILES_HANDLERS["UNSHARE"](token)
-

@@ -85,8 +85,10 @@ def test_unshare_success_request():
     # unshare
     response = app.test_client().post(
         "/file/unshare",
-        json={"fileUUID": unshare_files_data["file"]["uuid"],  "otherUsername":unshare_files_data["otherUsername"]},
+        json={
+            "fileUUID": unshare_files_data["file"]["uuid"],
+            "otherUsername": unshare_files_data["otherUsername"],
+        },
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 200
-
