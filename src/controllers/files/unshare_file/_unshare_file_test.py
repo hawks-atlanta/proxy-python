@@ -35,6 +35,35 @@ def test_unshare_bad_request():
     )
     assert login_response.error is False
 
+    # Empty fields in body
+    response = app.test_client().post(
+        "/file/unshare",
+        json={
+            "fileUUID": "",
+            "otherUsername": "",
+        },
+        headers={"Authorization": f"Bearer {login_response.auth.token}"},
+    )
+    assert response.status_code == 400
+
+    # Not valid file UUID
+    response = app.test_client().post(
+        "/file/unshare",
+        json={
+            "fileUUID": "not-valid-uuid",
+            "otherUsername": unshare_files_data["otherUsername"],
+        },
+        headers={"Authorization": f"Bearer {login_response.auth.token}"},
+    )
+    assert response.status_code == 400
+
+    # No body
+    response = app.test_client().post(
+        "/file/unshare",
+        headers={"Authorization": f"Bearer {login_response.auth.token}"},
+    )
+    assert response.status_code == 400
+
     # NO TOKEN
     response = app.test_client().post("/file/unshare")
     assert response.status_code == 401
@@ -92,3 +121,14 @@ def test_unshare_success_request():
         headers={"Authorization": f"Bearer {token}"},
     )
     assert response.status_code == 200
+
+    # Try to unshare the same file again
+    response = app.test_client().post(
+        "/file/unshare",
+        json={
+            "fileUUID": unshare_files_data["file"]["uuid"],
+            "otherUsername": unshare_files_data["otherUsername"],
+        },
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 409
