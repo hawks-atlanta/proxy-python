@@ -35,5 +35,6 @@ def unshare_handler(token):
     except ValueError:
         return {"msg": "Invalid JSON data provided in the request"}, 400
 
-    except Exception:
+    except Exception as e:
+        print("[Exception] unshare_handler ->", e)
         return {"msg": "There was an error unsharing the file"}, 500
