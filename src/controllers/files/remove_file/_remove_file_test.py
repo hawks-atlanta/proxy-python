@@ -77,7 +77,6 @@ def test_remove_success():
     )
     assert create_file_response.error is False
 
-    # DOWNLOAD the file
     file_response = app.test_client().delete(
         f"/file/{create_file_response.fileUUID}",
         headers={"Authorization": f"Bearer {token}"},
